@@ -1,0 +1,93 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
+
+namespace gpredict3_gaming.Ikaros
+{
+    [System.Serializable]
+    public class Version
+    {
+        public string current;
+        public string minimal;
+    }
+
+    public class VersionController : MonoBehaviour
+    {
+        public GameObject Message;
+        private void Awake()
+        {
+            StartCoroutine(CheckMinimalVersion());
+           
+        }
+
+
+
+
+        IEnumerator CheckMinimalVersion()
+        {
+            UnityWebRequest request = UnityWebRequest.Get(GameParameters.LOG_URL_BASE + GameParameters.VERSION_LOCATION);
+            request.certificateHandler = new BypassCertificate();
+            yield return request.SendWebRequest();
+
+            if (request.responseCode == GameParameters.RESPONSE_OK)
+            {
+                Version version = JsonUtility.FromJson<Version>(request.downloadHandler.text);
+                if(IsNeededUpdate(Application.version, version.minimal))
+                {
+                    Message.SetActive(true);
+                }
+            }
+            else
+            {
+                Debug.Log("It is not possible to determine required version of game.");
+            }
+
+        }
+
+        /// <summary>
+        /// Conversion of version string (in the form yyyy-MM-dd-HH-mm) to DateTime
+        /// </summary>
+        /// <param name="version">version to parse</param>
+        /// <returns>DateTime for version</returns>
+        DateTime ParseVersionToDateTime(string version)
+        {
+            string[] parseVersion = version.Trim().Split('-');
+            DateTime dateTime =new DateTime();
+
+            if (parseVersion.Length == 5)
+            {
+                dateTime = new DateTime(Int32.Parse(parseVersion[0]), Int32.Parse(parseVersion[1]), Int32.Parse(parseVersion[2]), 
+                    Int32.Parse(parseVersion[3]), Int32.Parse(parseVersion[4]), 0);
+            }
+            else
+            {
+                Debug.Log("The wrong format of version");
+            } 
+
+            return dateTime;
+        }
+
+
+        bool IsNeededUpdate(string usedVersion, string requiredVersion)
+        {
+            DateTime myVersion = ParseVersionToDateTime(usedVersion);
+            DateTime minimalVersion = ParseVersionToDateTime(requiredVersion);
+
+            return (myVersion < minimalVersion);
+
+        }
+
+
+
+        public void Download()
+        {
+            Application.OpenURL(GameParameters.DOWNLOAD_URL);
+
+        }
+
+
+
+    }
+}
