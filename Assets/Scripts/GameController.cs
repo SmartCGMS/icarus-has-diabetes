@@ -26,8 +26,6 @@ namespace gpredict3_gaming.Ikaros
         public UInt16 configClass = 1; //TODO - dependency on difficulty
         public UInt16 configId = 1;
         public UInt32 timeStep = 60000; //step for backend in [ms]
-        public String logFilePath = Path.Combine(Directory.GetParent(GameParameters.LOCAL_STORAGE_PATH).FullName, 
-            GameParameters.LOGFILE_PREFIX + GameParameters.LOGFILE_EXT);
 
 
 
@@ -36,11 +34,12 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         void Start()
         {
-
+            String logFilePath = Path.Combine(Directory.GetParent(Application.persistentDataPath).FullName,
+            GameParameters.LOGFILE_PREFIX + GameParameters.LOGFILE_EXT);
             Player = FindObjectOfType<PlayerController>();
             TimeCtrl = FindObjectOfType<TimeManager>();
             Player.Game = new SCGMS_Game(configClass, configId, timeStep, logFilePath);
-            Directory.SetCurrentDirectory(Directory.GetParent(GameParameters.LOCAL_STORAGE_PATH).FullName);
+            Directory.SetCurrentDirectory(Directory.GetParent(Application.persistentDataPath).FullName);
 
         }
 

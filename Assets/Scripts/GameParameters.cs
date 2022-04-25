@@ -32,7 +32,7 @@ namespace gpredict3_gaming.Ikaros
         public static readonly float MAX_COLOR_ALPHA_HYPO = 1.0f / 2.0f;
 
         public static readonly string GAME_WORKING_DIRECTORY = Directory.GetCurrentDirectory();
-        public static readonly string LOCAL_STORAGE_PATH = Application.persistentDataPath;
+        //public static readonly string LOCAL_STORAGE_PATH = Application.persistentDataPath; //This is not allowed -> change
         public static readonly string DOWNLOAD_URL = "https://diabetes.zcu.cz/ikaros";
         public static readonly string LOG_URL_BASE = "https://diabetes.zcu.cz/api/";
         public static readonly string UPLOAD_META_LOCATION = "upload-meta";

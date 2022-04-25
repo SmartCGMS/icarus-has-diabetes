@@ -109,7 +109,7 @@ namespace gpredict3_gaming.Ikaros
 
         public static AllScores LoadAllSavedLocalScores()
         {
-            string directory = Directory.GetParent(GameParameters.LOCAL_STORAGE_PATH).FullName;
+            string directory = Directory.GetParent(Application.persistentDataPath).FullName;
             string path = Path.Combine(directory, HallOfFameFilename + HallOfFameExt);
 
             AllScores allScores;
@@ -185,7 +185,7 @@ namespace gpredict3_gaming.Ikaros
 
         private static void SaveLocalScores(AllScores allScores)
         {
-            string directory = Directory.GetParent(GameParameters.LOCAL_STORAGE_PATH).FullName;
+            string directory = Directory.GetParent(Application.persistentDataPath).FullName;
             string path = Path.Combine(directory, HallOfFameFilename + HallOfFameExt);
 
             string dataAsJson = JsonUtility.ToJson(allScores);
