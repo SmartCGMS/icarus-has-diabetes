@@ -39,6 +39,9 @@ namespace gpredict3_gaming.Ikaros
         public string NameModeLabel;
         private Text ModeLabel;
 
+        public string NamePlaybackButton;
+        private Button PlaybackBtn;
+
         
         private string LogMetadataExt = ".json";
         private string LocalDestDirName = "Logs";
@@ -57,7 +60,7 @@ namespace gpredict3_gaming.Ikaros
 
             RankLabel = GameObject.Find(NameRankLabel).GetComponent<Text>();
             ModeLabel = GameObject.Find(NameModeLabel).GetComponent<Text>();
-
+            PlaybackBtn = GameObject.Find(NamePlaybackButton).GetComponent<Button>();
 
             int typeGame = PlayerPrefs.GetInt("type_game");
             if (typeGame == GameParameters.FULL_GAME)
@@ -72,6 +75,8 @@ namespace gpredict3_gaming.Ikaros
                 ModeLabel.text = "MODE: " + difficulty;
                 ModeLabel.gameObject.SetActive(true);
 
+                PlaybackBtn.gameObject.SetActive(true);
+
                 DateTime dateTime = DateTime.Now;
                 metadata = new Metadata { score = (int) Math.Round(AchievedScore),
                                           player_qualification = PlayerPrefs.GetInt("player_qualification"),
@@ -85,6 +90,7 @@ namespace gpredict3_gaming.Ikaros
             {
                 RankLabel.gameObject.SetActive(false);
                 ModeLabel.gameObject.SetActive(false);
+                PlaybackBtn.gameObject.SetActive(false);
             }
 
 
@@ -165,9 +171,13 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
-        public void PlayBack()
+
+        /// <summary>
+        /// Show the offer for playback
+        /// </summary>
+        public void Playback()
         {
-            //TODO
+            SceneManager.LoadScene(GameParameters.PLAYBACK_MENU);
         }
 
 
@@ -175,10 +185,11 @@ namespace gpredict3_gaming.Ikaros
         private void CopyLogAndSubmit(DateTime dateTime)
         {
             string sourceDir = Directory.GetParent(Application.persistentDataPath).FullName;
-            Debug.Log(sourceDir);
             string destDir = Path.Combine(sourceDir, LocalDestDirName);
-
-            string sourceFileFullPath = Path.Combine(sourceDir, GameParameters.LOGFILE_PREFIX + GameParameters.LOGFILE_EXT);
+            string sourceFileFullPath = PlayerPrefs.GetString("UserGameLog");
+            //Debug.Log(sourceDir);
+            //Debug.Log(destDir);
+            //Debug.Log(sourceFileFullPath);
             FileInfo fS = new FileInfo(sourceFileFullPath);
 
             if (fS.Exists)

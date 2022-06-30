@@ -87,16 +87,28 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
+        /// <summary>
+        /// Event handling when some bolus button is pressed.
+        /// </summary>
+        /// <param name="value"></param>
         public void BolusButton_Press(int value)
         {
             Player.AddBolus(value);
         }
 
+        /// <summary>
+        /// Event handling when some carbs button is pressed.
+        /// </summary>
+        /// <param name="value"></param>
         public void SugarButton_Press(int value)
         {
             Player.AddCarb(value);
         }
 
+        /// <summary>
+        /// Event handling when the basal slider is changed.
+        /// </summary>
+        /// <param name="newValue"></param>
         public void BasalSlider_Changed(float newValue)
         {
             Player.ChangeBasal(newValue);
@@ -201,7 +213,7 @@ namespace gpredict3_gaming.Ikaros
 
 
         /// <summary>
-        /// Create buttons for control of sugar
+        /// Create buttons for control of carbs
         /// </summary>
         void CreateSugarControl()
         {

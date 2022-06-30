@@ -105,6 +105,7 @@ namespace gpredict3_gaming.Ikaros
                 TimeLastInterpolationTick = GameTime;
             }
 
+            //calling the OnHealthyTick event for player
             if ((TimeLastHealthyTick + HealthyTickIntervalSecs) <= GameTime)
             {
                 Player.OnHealthyTick();
@@ -168,6 +169,7 @@ namespace gpredict3_gaming.Ikaros
         {
             return GameTime;
         }
+
 
         public float GetActualTime()
         {

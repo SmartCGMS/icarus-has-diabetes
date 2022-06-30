@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace gpredict3_gaming.Ikaros
 {
+    /// <summary>
+    /// Generic class for representation of a list of options and corresponding codes
+    /// </summary>
+    /// <typeparam name="TName">option</typeparam>
+    /// <typeparam name="TCode">code</typeparam>
     public class Enumeration<TName, TCode>
     {
         public List<TName> Names { get; private set; }

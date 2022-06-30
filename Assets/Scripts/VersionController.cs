@@ -6,13 +6,19 @@ using UnityEngine.Networking;
 
 namespace gpredict3_gaming.Ikaros
 {
+    
     [System.Serializable]
     public class Version
     {
+        // current version of the game
         public string current;
+        // minimum required version of the game
         public string minimal;
     }
 
+    /// <summary>
+    /// This class checks if a sufficient version of the game is installed.
+    /// </summary>
     public class VersionController : MonoBehaviour
     {
         public GameObject Message;
@@ -22,9 +28,10 @@ namespace gpredict3_gaming.Ikaros
            
         }
 
-
-
-
+        /// <summary>
+        /// Checks if the version of the game is valid. If the version is out-of-date, the message with the link on the current version is shown.
+        /// </summary>
+        /// <returns></returns>
         IEnumerator CheckMinimalVersion()
         {
             UnityWebRequest request = UnityWebRequest.Get(GameParameters.LOG_URL_BASE + GameParameters.VERSION_LOCATION);

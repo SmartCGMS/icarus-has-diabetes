@@ -22,10 +22,12 @@ namespace gpredict3_gaming.Ikaros
 
         public static float VisualSpeedMultiplier = -2.0f;
 
+        public UInt16 ConfigClass { get; private set; }
 
-        public UInt16 configClass = 1; //TODO - dependency on difficulty
-        public UInt16 configId = 1;
-        public UInt32 timeStep = 60000; //step for backend in [ms]
+        public UInt16 ConfigId { get; private set; }
+        public UInt32 TimeStep { get; private set; }
+
+        public String LogFilePath { get; private set; }
 
 
 
@@ -34,15 +36,32 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         void Start()
         {
-            String logFilePath = Path.Combine(Directory.GetParent(Application.persistentDataPath).FullName,
-            GameParameters.LOGFILE_PREFIX + GameParameters.LOGFILE_EXT);
+            gameSetup();
             Player = FindObjectOfType<PlayerController>();
             TimeCtrl = FindObjectOfType<TimeManager>();
-            Player.Game = new SCGMS_Game(configClass, configId, timeStep, logFilePath);
+            Player.Game = new SCGMS_Game(ConfigClass, ConfigId, TimeStep, LogFilePath);
             Directory.SetCurrentDirectory(Directory.GetParent(Application.persistentDataPath).FullName);
 
         }
 
+
+        private void gameSetup()
+        {
+            ConfigClass = 1; //TODO - dependency on difficulty
+            ConfigId = 1;
+            TimeStep = 60000;
+            LogFilePath = Path.Combine(Directory.GetParent(Application.persistentDataPath).FullName,
+            GameParameters.LOGFILE_PREFIX + GameParameters.LOGFILE_EXT);
+            PlayerPrefs.SetInt("ConfigClass", ConfigClass);
+            PlayerPrefs.SetInt("ConfigId", ConfigId);
+            PlayerPrefs.SetInt("TimeStep", (int) TimeStep);
+            PlayerPrefs.SetString("UserGameLog", LogFilePath);
+
+        }
+
+        /// <summary>
+        /// Update is called once per frame
+        /// </summary>
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -59,6 +78,9 @@ namespace gpredict3_gaming.Ikaros
         {
             TimeCtrl.TerminateGame();
         }
+
+
+       
 
 
         /*private String GetNativeLibraryPath()

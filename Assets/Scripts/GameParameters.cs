@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 namespace gpredict3_gaming.Ikaros
 {
@@ -11,7 +12,7 @@ namespace gpredict3_gaming.Ikaros
         public static readonly int FULL_GAME = 0;
         public static readonly int DEMO_GAME = 1;
 
-        public static readonly float GAME_TIME = 120.0f;
+        public static readonly float GAME_TIME = 10.0f; //for testing purposes//120.0f;
         public static readonly float DEMO_GAME_TIME = 20.0f;
 
         public static readonly float DIFFICULTY_EASY = 0.2f;
@@ -53,6 +54,19 @@ namespace gpredict3_gaming.Ikaros
         public static readonly string SCOREBOARD_SCENE = "HighScore";
         public static readonly string GAME_SCENE = "GameScene";
         public static readonly string GAME_OVER_SCENE = "GameOverMenu";
+        public static readonly string PLAYBACK_MENU = "PlaybackMenu";
+        public static readonly string LOADING_SCENE = "Loading";
+        public static readonly string PLAYBACK_SCENE = "PlaybackScene";
+
+        //Parameters for playback
+        public static readonly string OWN_GAME = "Option1";
+        public static readonly string OPTIMIZED_GAME = "Option2";
+        public static readonly string BOTH_GAME = "Option3"; //in the future, hope
+        public static readonly string OPT_LOGFILE = "optimalGame";
+        public static readonly UInt16 DEGREE_OF_OPT = 50;
+
+
 
     }
 }
+

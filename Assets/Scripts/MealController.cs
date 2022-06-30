@@ -29,11 +29,16 @@ namespace gpredict3_gaming.Ikaros
 
         private System.Random RGen = new System.Random();
 
+
         private void Start()
         {
             ResetMeal();
         }
 
+        /// <summary>
+        /// Reaction when there is the time for meal
+        /// </summary>
+        /// <param name="gameTime">the current time of game</param>
         public void ScheduleMeal(float gameTime)
         {
             if (NextMealTime < 0)

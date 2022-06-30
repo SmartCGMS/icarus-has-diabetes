@@ -8,11 +8,14 @@ namespace gpredict3_gaming.Ikaros
 {
     public class ProfileManager : MonoBehaviour
     {
+        //List of possible qualifications
         public static Enumeration<string, int> Qualification { get; private set; }
+        //List of possible diseases
         public static Enumeration<string, string> Disease { get; private set; }
+        //List of possible game modes
         public static Enumeration<string, float> Difficulty { get; private set; }
 
-
+        //objects for the form
         public GameObject QualificationGO;
         public GameObject DiseaseGO;
         public GameObject DifficultyGO;
@@ -30,6 +33,10 @@ namespace gpredict3_gaming.Ikaros
             SetDropdowns();
         }
 
+        /// <summary>
+        /// Reaction on the "Start" button click.
+        /// Information about the player is archived and the game is started.
+        /// </summary>
         public void OnStartClick()
         {
             PlayerPrefs.SetString("nickname", Nickname.text);
@@ -48,6 +55,9 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
+        /// <summary>
+        /// Dropdowns are created and the appropriate lists of options are assigned.
+        /// </summary>
         void SetDropdowns()
         {
             QualificationDD = QualificationGO.GetComponent<Dropdown>();
@@ -62,6 +72,11 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
+        /// <summary>
+        /// The list of options is assigned to the dropdown.
+        /// </summary>
+        /// <param name="dropdown">dropdown</param>
+        /// <param name="optionsName"> list of options</param>
         void SetOptionsToDropdown(Dropdown dropdown, string[] optionsName){
             List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
             for(int i = 0; i < optionsName.Length; i++)
@@ -71,6 +86,9 @@ namespace gpredict3_gaming.Ikaros
             dropdown.options = options;
         }
 
+        /// <summary>
+        /// Creates lists of options including appropriate codes for the user's form 
+        /// </summary>
         void CreateEnums()
         {
             FillQualificationEnumeration();
@@ -78,6 +96,9 @@ namespace gpredict3_gaming.Ikaros
             FillDifficultyEnumeration();
         }
 
+        /// <summary>
+        /// Filling the list of qualifications
+        /// </summary>
         void FillQualificationEnumeration()
         {
             Qualification = new Enumeration<string, int>();
@@ -88,6 +109,9 @@ namespace gpredict3_gaming.Ikaros
             Qualification.Add("No diabetic experience", 4);
         }
 
+        /// <summary>
+        /// Filling the list of diseases
+        /// </summary>
         void FillDiseaseEnumeration()
         {
             Disease = new Enumeration<string, string>();
@@ -98,6 +122,9 @@ namespace gpredict3_gaming.Ikaros
             Disease.Add("E13 - Other", "E13");
         }
 
+        /// <summary>
+        /// Filling the list of game modes
+        /// </summary>
         void FillDifficultyEnumeration()
         {
             Difficulty = new Enumeration<string, float>();

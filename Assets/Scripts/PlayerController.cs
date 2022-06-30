@@ -19,6 +19,7 @@ namespace gpredict3_gaming.Ikaros
         //false if it is the first calling of method OnSimulationTick
         private bool isSimulationInitialized = false;
 
+        //true if the patient dead
         public bool IsPatientDead { get; set; } = false;
 
         //basal
@@ -354,7 +355,7 @@ namespace gpredict3_gaming.Ikaros
             LastPosY = FuturePosY;
             BGValue = (float) val;
 
-            Debug.Log(val);
+            //Debug.Log(val);
 
             var PosOfBGPt = CurveBG.GetYValue(TimeCtrl.GetGameTime());
             FuturePosY = PosOfBGPt - (float)(val - ScoreManager.TargetMmolL) * GameAreaCoef;  // note the coordinates are inverted

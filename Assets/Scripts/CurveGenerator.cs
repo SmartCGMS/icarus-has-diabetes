@@ -35,11 +35,12 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         private Vector3 StartPosition;
 
-        /// <summary>
-        /// Difficulty of the game (0.2f - easy; 0.4f - medium; 0.6f - hard)
-        /// </summary>
-        private float CurveHeight = 0.4f;
-        private float Wavy = 1.0f;
+
+        // Parameters of the generated curve
+        private float CurveHeight;
+        private float CurveWavy;
+        private float CurveContour; 
+
 
         /// <summary>
         /// The step of simulation
@@ -56,6 +57,8 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         private Vector3 FinishStartPosition;
 
+        public bool isPlayback;
+
         /// <summary>
         /// Start is called before the first frame update
         /// </summary>
@@ -63,20 +66,43 @@ namespace gpredict3_gaming.Ikaros
         {
             InitializeComponent();
             SimulationStep = TimeCtrl.GetSimulationTickIntervalSecs()/2;
-            //Difficulty = PlayerPrefs.GetFloat("difficulty");
+            //Difficulty = PlayerPrefs.GetFloat("difficulty"); // this line of code was used when the curve affected the difficulty of the game
 
-            //random generator for contour - TODO: more range
-            var rnd = new System.Random();
-            float contour = (float) rnd.NextDouble();
-            
-            GeneratePtsPerlinInSimTicks(TimeCtrl.GetMaxGameTime() + 1, SimulationStep, Wavy, contour);
+            GeneratePtsPerlinInSimTicks(TimeCtrl.GetMaxGameTime() + 1, SimulationStep);
             GenerateBGCurve(SimulationStep, TimeCtrl.GetInterpolationTickIntervalSecs(), -GameController.VisualSpeedMultiplier);
 
             DetermineStartPositionOfCurve();
             PlacementFinishBanner();
         }
 
-        // Update is called once per frame
+        /// <summary>
+        /// Setting parameters of the generated curve
+        /// </summary>
+        private void setParameters()
+        {
+            if (!isPlayback)
+            {
+                var rnd = new System.Random();
+                CurveHeight = 0.4f; //Note: In the original version, the parameter CurveHeight was decribed the difficulty of the game(0.2f - easy; 0.4f - medium; 0.6f - hard), in the future maybe rand
+                CurveWavy = 1.0f; //How much the curve should be wavy, in the future maybe random
+                CurveContour = (float)rnd.NextDouble(); // Contour in second dimension - work as random seed - TODO: more range
+                PlayerPrefs.SetFloat("CurveHeight", CurveHeight);
+                PlayerPrefs.SetFloat("CurveWavy", CurveWavy);
+                PlayerPrefs.SetFloat("CurveContour", CurveContour);
+
+            }
+            else
+            {
+                CurveHeight = PlayerPrefs.GetFloat("CurveHeight");
+                CurveWavy = PlayerPrefs.GetFloat("CurveWavy");
+                CurveContour = PlayerPrefs.GetFloat("CurveContour");
+            }
+        }
+
+        /// <summary>
+        /// Update is called once per frame
+        /// The curve is shifted so that the "point" for the current game time is in the center of the screen in the horizontal direction.
+        /// </summary>
         private void Update()
         {
             transform.position = new Vector3(StartPosition.x + TimeCtrl.GetGameTime() * GameController.VisualSpeedMultiplier, StartPosition.y, StartPosition.z);
@@ -92,6 +118,7 @@ namespace gpredict3_gaming.Ikaros
             TimeCtrl = FindObjectOfType<TimeManager>();
             PlayerCtrl = FindObjectOfType<PlayerController>();
             BGCurveRenderer = GetComponent<LineRenderer>();
+            setParameters();
         }
 
         /// <summary>
@@ -122,9 +149,8 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         /// <param name="duration">Max game time</param>
         /// <param name="simStep">Simulation step</param>
-        /// <param name="wavy">How much the curve should be wavy</param>
-        /// <param name="contour">Contour in second dimension - work as random seed</param>
-        void GeneratePtsPerlinInSimTicks(float duration, float simStep, float wavy, float contour)
+        //void GeneratePtsPerlinInSimTicks(float duration, float simStep, float wavy, float contour)
+        void GeneratePtsPerlinInSimTicks(float duration, float simStep)
         {
             int noPtsSim = (int)Mathf.Round((duration) / simStep) + 1;
             BGCurveInSimTicks = new Vector3[noPtsSim];
@@ -132,8 +158,8 @@ namespace gpredict3_gaming.Ikaros
             for (int i = 0; i < noPtsSim; i++)
             {
                 var simTime = i * simStep;
-                var posX = simTime * wavy;
-                float posY = PlayerCtrl.GetNormalLevel() + CurveHeight * PlayerCtrl.GetGameAreaHeight() * (Mathf.PerlinNoise(posX, contour)-0.5f);
+                var posX = simTime * CurveWavy;
+                float posY = PlayerCtrl.GetNormalLevel() + CurveHeight * PlayerCtrl.GetGameAreaHeight() * (Mathf.PerlinNoise(posX, CurveContour)-0.5f);
                 BGCurveInSimTicks[i] = new Vector3(simTime, posY);
             }
         }
