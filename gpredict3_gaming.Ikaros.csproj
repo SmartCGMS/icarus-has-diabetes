@@ -56,30 +56,30 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\VersionDescription.cs" />
     <Compile Include="Assets\LightRays2D\Script\LightRays2DAbstract.cs" />
+    <Compile Include="Assets\Scripts\ScrollingBackground.cs" />
+    <Compile Include="Assets\Scripts\MealController.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\SliderThroughKeyChange.cs" />
+    <Compile Include="Assets\Scripts\GameDummyTest\SCGMS_Game_Opt.cs" />
+    <Compile Include="Assets\Scripts\GameOverMenu.cs" />
+    <Compile Include="Assets\Scripts\MenuButtonEvents.cs" />
+    <Compile Include="Assets\Scripts\ScoreManager.cs" />
+    <Compile Include="Assets\Scripts\VersionDescription.cs" />
     <Compile Include="Assets\Scripts\ButtonThroughKeyClick.cs" />
     <Compile Include="Assets\LightRays2D\Script\LightRays2D.cs" />
     <Compile Include="Assets\Scripts\ScoreDataStorage.cs" />
-    <Compile Include="Assets\Scripts\ScrollingBackground.cs" />
-    <Compile Include="Assets\Scripts\MealController.cs" />
     <Compile Include="Assets\Scripts\GameParameters.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Enumeration.cs" />
-    <Compile Include="Assets\Scripts\SliderThroughKeyChange.cs" />
     <Compile Include="Assets\Scripts\TouchControls.cs" />
-    <Compile Include="Assets\Scripts\GameDummyTest\SCGMS_Game_Opt.cs" />
-    <Compile Include="Assets\Scripts\GameOverMenu.cs" />
     <Compile Include="Assets\Scripts\CurveGenerator.cs" />
     <Compile Include="Assets\Scripts\PlaybackManager.cs" />
     <Compile Include="Assets\Scripts\VersionController.cs" />
     <Compile Include="Assets\Scripts\GameDummyTest\SCGMS_Game.cs" />
-    <Compile Include="Assets\Scripts\MenuButtonEvents.cs" />
     <Compile Include="Assets\Scripts\ProgressBar.cs" />
-    <Compile Include="Assets\Scripts\ScoreManager.cs" />
-    <Compile Include="Assets\Scripts\TimeManager.cs" />
     <Compile Include="Assets\Scripts\ProfileManager.cs" />
+    <Compile Include="Assets\Scripts\TimeManager.cs" />
     <Compile Include="Assets\Scripts\HighscoreManager.cs" />
     <Compile Include="Assets\Scripts\BypassCertificate.cs" />
   </ItemGroup>
