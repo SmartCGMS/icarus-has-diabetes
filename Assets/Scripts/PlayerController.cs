@@ -56,7 +56,7 @@ namespace gpredict3_gaming.Ikaros
 
         private Vector2 PlayerSize, BolusEffectSize, SugarEffectSize, MealEffectSize;
 
-        public MealController MealCtrl;
+        public MealController MealCtrl; //!!! TODO Playback - nutno vyresit, tam se bude jidlo brat z logu
         public TimeManager TimeCtrl;
         public CurveGenerator CurveBG;
 
@@ -69,7 +69,7 @@ namespace gpredict3_gaming.Ikaros
         public GameObject Meal;
 
         //set color vision
-        public GameObject Healthy;
+        public GameObject Healthy;  //!!! TODO Playback - az budou prehravany obe varianty, tak musi byt tohle vyrazeno, aby to nematlo
         public Image HealthyIM;
         private bool isHealthyActive = false;
         private float BGValue = (float) ScoreManager.TargetMmolL;
@@ -144,10 +144,9 @@ namespace gpredict3_gaming.Ikaros
                 isSimulationInitialized = true;
                 return;
             }
-
             double mealVal = 0, basal, bolusVal = 0, CHOVal = 0;
             double mealTime = 0, basalTime, bolusTime = 0, CHOTime = 0;
-            MealCtrl.ScheduleMeal(gameTime);
+            MealCtrl.ScheduleMeal(gameTime); 
 
             if (MealCtrl.GetNextMealTime() <= gameTime && !MealCtrl.IsMealScheduled)
             {
@@ -244,8 +243,8 @@ namespace gpredict3_gaming.Ikaros
             {
                 Bolus.SetActive(false);
             }
-
-            Bolus.transform.position = transform.position + new Vector3(0, -0.5f * (PlayerSize.y + BolusEffectSize.y));
+            
+            
             if (SugarEffectStartTime > 0)
             {
                 Sugar.transform.position = transform.position + new Vector3(0, 0.75f * PlayerSize.y  + 0.5f * SugarEffectSize.y);
@@ -290,6 +289,11 @@ namespace gpredict3_gaming.Ikaros
             isHealthyActive = !isHealthyActive;
             Healthy.SetActive(isHealthyActive);
         }
+
+
+
+
+
 
 
         public void ChangeBasal(float newBasal)
@@ -351,7 +355,7 @@ namespace gpredict3_gaming.Ikaros
         public void SetMMolLValue(double val)
         {
             if (val <= 0) IsPatientDead = true;
-            FuturePosTime = 0.0f;
+            FuturePosTime = 0.0f; 
             LastPosY = FuturePosY;
             BGValue = (float) val;
 

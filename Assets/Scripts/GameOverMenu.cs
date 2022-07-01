@@ -105,56 +105,52 @@ namespace gpredict3_gaming.Ikaros
 
         IEnumerator PostRequest(string jsonString, string dirWithFile, string filename)
         {
-            using (UnityWebRequest requestFirstPass = UnityWebRequest.Post(GameParameters.LOG_URL_BASE + GameParameters.UPLOAD_META_LOCATION, jsonString))
+            using UnityWebRequest requestFirstPass = UnityWebRequest.Post(GameParameters.LOG_URL_BASE + GameParameters.UPLOAD_META_LOCATION, jsonString);
+            requestFirstPass.downloadHandler = new DownloadHandlerBuffer();
+            requestFirstPass.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonString));
+            requestFirstPass.SetRequestHeader("Content-Type", "application/json");
+            requestFirstPass.certificateHandler = new BypassCertificate();
+            yield return requestFirstPass.SendWebRequest();
+
+            if (requestFirstPass.responseCode == GameParameters.RESPONSE_OK)
             {
-                requestFirstPass.downloadHandler = new DownloadHandlerBuffer();
-                requestFirstPass.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonString));
-                requestFirstPass.SetRequestHeader("Content-Type", "application/json");
-                requestFirstPass.certificateHandler = new BypassCertificate();
-                yield return requestFirstPass.SendWebRequest();
+                string responseJson = requestFirstPass.downloadHandler.text;
+                var response = JsonUtility.FromJson<ResponseMeta>(responseJson);
 
-                if (requestFirstPass.responseCode == GameParameters.RESPONSE_OK)
+                string fileFullPath = Path.Combine(dirWithFile, filename + GameParameters.LOGFILE_EXT);
+                byte[] logFile = File.ReadAllBytes(fileFullPath);
+
+                var dataLog = new List<IMultipartFormSection>();
+                dataLog.Add(new MultipartFormFileSection("log", logFile, filename + GameParameters.LOGFILE_EXT, "text/plain"));
+
+                byte[] boundary = UnityWebRequest.GenerateBoundary();
+
+                string urlLog = GameParameters.LOG_URL_BASE + GameParameters.UPLOAD_DATA_LOCATION + response.id;
+                using UnityWebRequest requestSecondPass = UnityWebRequest.Post(urlLog, dataLog, boundary);
+                requestSecondPass.downloadHandler = new DownloadHandlerBuffer();
+                requestSecondPass.certificateHandler = new BypassCertificate();
+                yield return requestSecondPass.SendWebRequest();
+
+                if (requestSecondPass.responseCode == GameParameters.RESPONSE_OK)
                 {
-                    string responseJson = requestFirstPass.downloadHandler.text;
-                    var response = JsonUtility.FromJson<ResponseMeta>(responseJson);
-
-                    string fileFullPath = Path.Combine(dirWithFile, filename + GameParameters.LOGFILE_EXT);
-                    byte[] logFile = File.ReadAllBytes(fileFullPath);
-
-                    var dataLog = new List<IMultipartFormSection>();
-                    dataLog.Add(new MultipartFormFileSection("log", logFile, filename + GameParameters.LOGFILE_EXT, "text/plain"));
-
-                    byte[] boundary = UnityWebRequest.GenerateBoundary();
-
-                    string urlLog = GameParameters.LOG_URL_BASE + GameParameters.UPLOAD_DATA_LOCATION + response.id;
-                    using (UnityWebRequest requestSecondPass = UnityWebRequest.Post(urlLog, dataLog, boundary))
+                    var destDir = Path.Combine(dirWithFile, SubmittedDirName);
+                    if (!Directory.Exists(destDir))
                     {
-                        requestSecondPass.downloadHandler = new DownloadHandlerBuffer();
-                        requestSecondPass.certificateHandler = new BypassCertificate();
-                        yield return requestSecondPass.SendWebRequest();
-
-                        if (requestSecondPass.responseCode == GameParameters.RESPONSE_OK)
-                        {
-                            var destDir = Path.Combine(dirWithFile, SubmittedDirName);
-                            if (!Directory.Exists(destDir))
-                            {
-                                Debug.Log("Destination directory not found.");
-                                Directory.CreateDirectory(destDir);
-                            }
-                            var sourceFileFullPathLog = Path.Combine(dirWithFile, filename + GameParameters.LOGFILE_EXT);
-                            var sourceFileFullPathMeta = Path.Combine(dirWithFile, filename + LogMetadataExt);
-                            var destFileFullPathLog = Path.Combine(destDir, filename + GameParameters.LOGFILE_EXT);
-                            var destFileFullPathMeta = Path.Combine(destDir, filename + LogMetadataExt);
-                            File.Move(sourceFileFullPathLog, destFileFullPathLog);
-                            File.Move(sourceFileFullPathMeta, destFileFullPathMeta);
-                        }
-                        else
-                        {
-                            Debug.Log("Submission was failed!");
-                        }
+                        Debug.Log("Destination directory not found.");
+                        Directory.CreateDirectory(destDir);
                     }
-
+                    var sourceFileFullPathLog = Path.Combine(dirWithFile, filename + GameParameters.LOGFILE_EXT);
+                    var sourceFileFullPathMeta = Path.Combine(dirWithFile, filename + LogMetadataExt);
+                    var destFileFullPathLog = Path.Combine(destDir, filename + GameParameters.LOGFILE_EXT);
+                    var destFileFullPathMeta = Path.Combine(destDir, filename + LogMetadataExt);
+                    File.Move(sourceFileFullPathLog, destFileFullPathLog);
+                    File.Move(sourceFileFullPathMeta, destFileFullPathMeta);
                 }
+                else
+                {
+                    Debug.Log("Submission was failed!");
+                }
+
             }
         }
 

@@ -60,10 +60,10 @@ namespace gpredict3_gaming.Ikaros {
                     opt.Finalize_Output();
                     String logfilesPath = OptimalLogfilePath;
                     /*TODO - in the future when the options for BOTH_GAME will be available
-                    var tmp = PlayerPrefs.GetString("ReplayLogfile");
+                    var tmp = PlayerPrefs.GetString("ReplayLogs");
                     logfilesPath = tmp + ", " + OptimalLogfilePath; //maybe another separator will be needed
                     */
-                    PlayerPrefs.SetString("ReplayLogfile", logfilesPath);
+                    PlayerPrefs.SetString("ReplayLogs", logfilesPath);
                     
                     SceneManager.LoadScene(GameParameters.PLAYBACK_SCENE);
                 }

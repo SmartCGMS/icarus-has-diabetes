@@ -25,9 +25,11 @@ namespace gpredict3_gaming.Ikaros
             Toggle toggle = toggleGroup.ActiveToggles().FirstOrDefault();
             Debug.Log("The choice " + toggle.GetComponentInChildren<Text>().text + " will be replay");
 
+            PlayerPrefs.SetInt("type_game", GameParameters.PLAYBACK);
+
             if (toggle.name.Equals(GameParameters.OWN_GAME))
             {
-                PlayerPrefs.SetString("ReplayLogfile", PlayerPrefs.GetString("UserGameLog"));
+                PlayerPrefs.SetString("ReplayLogs", PlayerPrefs.GetString("UserGameLog"));
                 SceneManager.LoadScene(GameParameters.PLAYBACK_SCENE);
             }
             else if (toggle.name.Equals(GameParameters.OPTIMIZED_GAME))
@@ -37,7 +39,7 @@ namespace gpredict3_gaming.Ikaros
             /*TODO - in the future when the options for BOTH_GAME will be available
             else if (toggle.name.Equals(GameParameters.BOTH_GAME))
             {
-                PlayerPrefs.SetString("ReplayLogfile", PlayerPrefs.GetString("UserGameLog"));
+                PlayerPrefs.SetString("ReplayLogs", PlayerPrefs.GetString("UserGameLog"));
                 SceneManager.LoadScene(GameParameters.LOADING_SCENE);
             }*/
         }

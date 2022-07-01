@@ -36,7 +36,7 @@ namespace gpredict3_gaming.Ikaros
         private float HealthyTickIntervalSecs = 0.4f;
         private float TimeLastHealthyTick = 0.0f;
 
-        private Text TimeText;
+        private Text TimeText; //!!! TODO Playback - mozna nebude cas zobrazovan???
 
         //public string GameOverScene;
         public PlayerController Player;
@@ -91,7 +91,7 @@ namespace gpredict3_gaming.Ikaros
 
             //if time to end of game is less of equal to zero, the game over scene is called
             //if the patient is dead, the game over scene is called, too
-            if (remainTime <= 0 || Player.IsPatientDead)
+            if (remainTime <= 0 || Player.IsPatientDead) //!!! TODO Playback - tady mozna bude nutna uprava druhe podminky???
             {
                 TerminateGame();
                 SceneManager.LoadScene(GameParameters.GAME_OVER_SCENE);

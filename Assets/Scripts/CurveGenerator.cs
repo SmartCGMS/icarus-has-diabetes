@@ -57,7 +57,7 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         private Vector3 FinishStartPosition;
 
-        public bool isPlayback;
+        //public bool isPlayback;
 
         /// <summary>
         /// Start is called before the first frame update
@@ -80,8 +80,9 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         private void setParameters()
         {
-            if (!isPlayback)
+            if (PlayerPrefs.GetInt("type_game") != GameParameters.PLAYBACK)  //if (!isPlayback)
             {
+                Debug.Log("Generate new parameters for curve");
                 var rnd = new System.Random();
                 CurveHeight = 0.4f; //Note: In the original version, the parameter CurveHeight was decribed the difficulty of the game(0.2f - easy; 0.4f - medium; 0.6f - hard), in the future maybe rand
                 CurveWavy = 1.0f; //How much the curve should be wavy, in the future maybe random
@@ -93,6 +94,7 @@ namespace gpredict3_gaming.Ikaros
             }
             else
             {
+                Debug.Log("Set the previous parameters for curve");
                 CurveHeight = PlayerPrefs.GetFloat("CurveHeight");
                 CurveWavy = PlayerPrefs.GetFloat("CurveWavy");
                 CurveContour = PlayerPrefs.GetFloat("CurveContour");

@@ -11,6 +11,7 @@ namespace gpredict3_gaming.Ikaros
 
         public static readonly int FULL_GAME = 0;
         public static readonly int DEMO_GAME = 1;
+        public static readonly int PLAYBACK = 2;
 
         public static readonly float GAME_TIME = 10.0f; //for testing purposes//120.0f;
         public static readonly float DEMO_GAME_TIME = 20.0f;
