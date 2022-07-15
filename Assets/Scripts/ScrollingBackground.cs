@@ -30,7 +30,7 @@ namespace gpredict3_gaming.Ikaros
         void Update()
         {
             //Repeating and scrolling background
-            float newPos = Mathf.Repeat(TimeCtrl.GetGameTime() * GameController.VisualSpeedMultiplier, BackgroundHorizontalLenght);
+            float newPos = Mathf.Repeat(TimeCtrl.GameTime * GameController.VisualSpeedMultiplier, BackgroundHorizontalLenght);
             transform.position = StartPos + Vector2.right * (newPos - BackgroundHorizontalLenght);
 
         }

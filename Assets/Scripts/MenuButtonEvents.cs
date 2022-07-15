@@ -15,7 +15,7 @@ namespace gpredict3_gaming.Ikaros
         public void NewGame()
         {
             PlayerPrefs.SetFloat("maxGameTime", GameParameters.GAME_TIME);
-            PlayerPrefs.SetInt("type_game", GameParameters.FULL_GAME);
+            PlayerPrefs.SetInt("type_game", (int)TypeGame.FULL_GAME);
             SceneManager.LoadScene(GameParameters.PROFILE_SCENE);
             
         }
@@ -27,7 +27,7 @@ namespace gpredict3_gaming.Ikaros
         public void TestGame()
         {
             PlayerPrefs.SetFloat("maxGameTime", GameParameters.DEMO_GAME_TIME);
-            PlayerPrefs.SetInt("type_game", GameParameters.DEMO_GAME);
+            PlayerPrefs.SetInt("type_game", (int)TypeGame.DEMO_GAME);
             PlayerPrefs.SetFloat("difficulty", GameParameters.DIFFICULTY_EASY);
             SceneManager.LoadScene(GameParameters.GAME_SCENE);
             

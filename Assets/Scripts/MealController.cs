@@ -9,8 +9,8 @@ namespace gpredict3_gaming.Ikaros
     public class MealController : MonoBehaviour
     {
         // range of meal size
-        private static readonly float MinMealValue = 31;
-        private static readonly float MaxMealValue = 100;
+        public static readonly float MinMealValue = 31;
+        public static readonly float MaxMealValue = 100;
 
         //range of time between meals (in seconds)
         //one second equal to 25 minutes in SmartCGMS backend => time between meals in backend is from 3 hours to 5 hours
@@ -23,8 +23,8 @@ namespace gpredict3_gaming.Ikaros
         */
 
         //Scheduler of next meal
-        private float NextMealTime;
-        private float NextMealValue;
+        public float NextMealTime { get; private set; }
+        public float NextMealValue { get; private set; }
         public bool IsMealScheduled { get; set; }
 
         private System.Random RGen = new System.Random();
@@ -45,44 +45,22 @@ namespace gpredict3_gaming.Ikaros
             {
                 NextMealTime = gameTime + MinMealTime + (float)RGen.NextDouble() * (MaxMealTime - MinMealTime);
                 NextMealValue = MinMealValue + (float)RGen.NextDouble() * (MaxMealValue - MinMealValue);
+                MealDataStorage.addMeal(NextMealTime, NextMealValue);
             }
         }
 
-        /// <summary>
-        /// Getter for time when next meal is scheduled.
-        /// </summary>
-        /// <returns>Time for which next meal is scheduled</returns>
-        public float GetNextMealTime()
+        public void ScheduleMeal()
         {
-            return NextMealTime;
+            if(NextMealTime < 0 && MealDataStorage.existNextMeal())
+            {
+                var meal = MealDataStorage.removeFirstMeal();
+                NextMealTime = meal.MealTime;
+                NextMealValue = meal.MealValue;
+                Debug.Log("Scheduled meal at time " + NextMealTime + ", the size of meal is " + NextMealValue); 
+            }
         }
 
-        /// <summary>
-        /// Getter for size of next meal.
-        /// </summary>
-        /// <returns>Size of next meal</returns>
-        public float GetNextMealValue()
-        {
-            return NextMealValue;
-        }
 
-        /// <summary>
-        /// Getter for max size of meal.
-        /// </summary>
-        /// <returns>Max size of meal</returns>
-        public float GetMaxMealValue()
-        {
-            return MaxMealValue;
-        }
-
-        /// <summary>
-        /// Getter for min size of meal.
-        /// </summary>
-        /// <returns>Min size of meal</returns>
-        public float GetMinMealValue()
-        {
-            return MinMealValue;
-        }
 
 
         /// <summary>

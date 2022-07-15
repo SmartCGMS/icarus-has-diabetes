@@ -17,29 +17,29 @@ namespace gpredict3_gaming.Ikaros
         private float StartTime;
 
         //the actual time of the game (in seconds) 
-        private float GameTime;
+        public float GameTime { get; private set; }
 
 
         //the duration of the whole game (in seconds)
-        private float MaxGameTime;
+        public float MaxGameTime { get; private set; }
 
         //simulation interval, i.e. interval between ticks to SmartCGMS backend
-        private float SimulationTickIntervalSecs = 0.04f; //equal 1 minute (timeStep) in SmartCGMS backend;
+        public static readonly float SimulationTickIntervalSecs = 0.04f; //equal 1 minute (timeStep) in SmartCGMS backend;
         //private float SimulationTickIntervalSecs = 0.2f; //old stepping
 
         //interpolation interval, i.e. player move, meal move, etc.
-        private float InterpolationTickIntervalSecs = 0.01f; //four times per one simulation tick
+        public static readonly float InterpolationTickIntervalSecs = 0.01f; //four times per one simulation tick
         //private float InterpolationTickIntervalSecs = 0.05f; //old stepping
         private float TimeLastInterpolationTick = 0.0f;
 
         //interval for heatlhy efect
-        private float HealthyTickIntervalSecs = 0.4f;
+        public static readonly float HealthyTickIntervalSecs = 0.4f;
         private float TimeLastHealthyTick = 0.0f;
 
-        private Text TimeText; //!!! TODO Playback - mozna nebude cas zobrazovan???
+        private Text TimeText;
 
         //public string GameOverScene;
-        public PlayerController Player;
+        private PlayerCharacter[] PlayersArr; 
 
         
 
@@ -65,7 +65,7 @@ namespace gpredict3_gaming.Ikaros
             GameTime = 0.0f;
             StartTime = Time.time;
             MaxGameTime = PlayerPrefs.GetFloat("maxGameTime");
-            Player = FindObjectOfType<PlayerController>();
+            PlayersArr = FindObjectsOfType<PlayerCharacter>();
             IsTerminated = false;
 
         }
@@ -91,7 +91,8 @@ namespace gpredict3_gaming.Ikaros
 
             //if time to end of game is less of equal to zero, the game over scene is called
             //if the patient is dead, the game over scene is called, too
-            if (remainTime <= 0 || Player.IsPatientDead) //!!! TODO Playback - tady mozna bude nutna uprava druhe podminky???
+            //if (remainTime <= 0 || PlayersArr.IsPatientDead) 
+            if (remainTime <= 0 || isSomePatientDead())
             {
                 TerminateGame();
                 SceneManager.LoadScene(GameParameters.GAME_OVER_SCENE);
@@ -101,14 +102,23 @@ namespace gpredict3_gaming.Ikaros
             //calling the OnInterpolationTick event for player
             if ((TimeLastInterpolationTick + InterpolationTickIntervalSecs) <= GameTime)
             {
-                Player.OnInterpolationTick(GameTime-TimeLastInterpolationTick);
+                //Player.OnInterpolationTick(GameTime-TimeLastInterpolationTick);
+                foreach(var player in PlayersArr)
+                {
+                    player.OnInterpolationTick(GameTime - TimeLastInterpolationTick);
+                }
                 TimeLastInterpolationTick = GameTime;
             }
 
             //calling the OnHealthyTick event for player
             if ((TimeLastHealthyTick + HealthyTickIntervalSecs) <= GameTime)
             {
-                Player.OnHealthyTick();
+                //Player.OnHealthyTick();
+                foreach (var player in PlayersArr)
+                {
+                    player.OnHealthyTick();
+                }
+                
                 TimeLastHealthyTick = GameTime;
             }
 
@@ -128,7 +138,11 @@ namespace gpredict3_gaming.Ikaros
             }
 
             //calling the OnSimulationTick event for player
-            Player.OnSimulationTick(Time.time - StartTime);
+            //Player.OnSimulationTick(Time.time - StartTime);
+            foreach (var player in PlayersArr)
+            {
+                player.OnSimulationTick(Time.time - StartTime);
+            }
         }
 
 
@@ -136,39 +150,25 @@ namespace gpredict3_gaming.Ikaros
         {
             //NativeBridge.Filter_GameInsulinTick(-1, -1, -1);
             //NativeBridge.TerminateFilterChain();
-            Player.Game.Terminate();
+            //Player.Game.Terminate();
+            foreach (var player in PlayersArr)
+            {
+                player.Game.Terminate();
+            }
             Directory.SetCurrentDirectory(GameParameters.GAME_WORKING_DIRECTORY);
             IsTerminated = true;
         }
 
 
-
-        /// <summary>
-        /// Getter for tick of simulation step in seconds
-        /// </summary>
-        /// <returns>tick of simulation step</returns>
-        public float GetSimulationTickIntervalSecs()
+        private bool isSomePatientDead()
         {
-            return SimulationTickIntervalSecs;
+            foreach (var player in PlayersArr)
+            {
+                if (player.IsPatientDead) return true;
+            }
+            return false;
         }
 
-        /// <summary>
-        /// Getter for tick of interpolation step in seconds
-        /// </summary>
-        /// <returns>tick of interpolation step</returns>
-        public float GetInterpolationTickIntervalSecs()
-        {
-            return InterpolationTickIntervalSecs;
-        }
-
-        /// <summary>
-        /// Getter for game time in seconds
-        /// </summary>
-        /// <returns>game time</returns>
-        public float GetGameTime()
-        {
-            return GameTime;
-        }
 
 
         public float GetActualTime()
@@ -176,9 +176,6 @@ namespace gpredict3_gaming.Ikaros
             return Time.time - StartTime;
         }
 
-        public float GetMaxGameTime()
-        {
-            return MaxGameTime;
-        }
     }
+
 }

@@ -3,16 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Globalization;
 
 namespace gpredict3_gaming.Ikaros
+
+    
 {
+    public enum TypeGame
+    {
+        FULL_GAME = 0,
+        DEMO_GAME = 1,
+        PLAYBACK = 2
+    }
+
+    public enum TypeReplay
+    {
+        PLAYER = 0,
+        AI = 1,
+        BOTH = 2
+
+    }
+
     public class GameParameters
     {
-
-        public static readonly int FULL_GAME = 0;
-        public static readonly int DEMO_GAME = 1;
-        public static readonly int PLAYBACK = 2;
-
         public static readonly float GAME_TIME = 10.0f; //for testing purposes//120.0f;
         public static readonly float DEMO_GAME_TIME = 20.0f;
 
@@ -42,6 +55,8 @@ namespace gpredict3_gaming.Ikaros
         public static readonly string GLOBAL_SCOREBOARD_LOCATION = "scoreboard";
         public static readonly string VERSION_LOCATION = "version";
         public static readonly long RESPONSE_OK = 200L;
+
+        public static readonly NumberFormatInfo nfi = CultureInfo.GetCultureInfo("en-GB").NumberFormat;
 
         public static readonly string LOGFILE_PREFIX = "log";
         public static readonly string LOGFILE_EXT = ".txt";

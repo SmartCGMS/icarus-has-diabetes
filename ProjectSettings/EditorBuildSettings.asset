@@ -32,7 +32,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Loading.unity
     guid: 362ef325b90b83549afff054d57150a1
+  - enabled: 0
+    path: Assets/Scenes/temp.unity
+    guid: 39b380aa4c982e94bb6da84032a3e752
   - enabled: 1
     path: Assets/Scenes/PlaybackScene.unity
-    guid: 39b380aa4c982e94bb6da84032a3e752
+    guid: c62ca781aea78db4fbc183adb8886d19
   m_configObjects: {}

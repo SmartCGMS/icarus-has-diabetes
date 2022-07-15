@@ -63,7 +63,7 @@ namespace gpredict3_gaming.Ikaros
             PlaybackBtn = GameObject.Find(NamePlaybackButton).GetComponent<Button>();
 
             int typeGame = PlayerPrefs.GetInt("type_game");
-            if (typeGame == GameParameters.FULL_GAME)
+            if (typeGame == (int) TypeGame.FULL_GAME)
             {
                 string nickname = PlayerPrefs.GetString("nickname");
                 string difficulty = PlayerPrefs.GetString("difficulty_name");
@@ -91,6 +91,10 @@ namespace gpredict3_gaming.Ikaros
                 RankLabel.gameObject.SetActive(false);
                 ModeLabel.gameObject.SetActive(false);
                 PlaybackBtn.gameObject.SetActive(false);
+                if(typeGame == (int)TypeGame.PLAYBACK)
+                {
+                    ScoreLabel.gameObject.SetActive(false);
+                }
             }
 
 

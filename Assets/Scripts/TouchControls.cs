@@ -37,8 +37,8 @@ namespace gpredict3_gaming.Ikaros
         private static readonly int[] SugarValues = new int[] { 5, 10, 15, 20, 30 };
         private static readonly KeyCode[] BolusKeys = new KeyCode[] { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T };
         private static readonly KeyCode[] SugarKeys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G };
-        private static readonly float MinBasalRate = 0.0f;
-        private static readonly float MaxBasalRate = 3.5f;
+        public static readonly float MinBasalRate = 0.0f;
+        public static readonly float MaxBasalRate = 4.0f;
         private static readonly float StepBasalInPercent = 0.01f;
         private static readonly KeyCode basalInc = KeyCode.UpArrow;
         private static readonly KeyCode basalDec = KeyCode.DownArrow;
@@ -169,7 +169,7 @@ namespace gpredict3_gaming.Ikaros
             BasalSlider.onValueChanged.AddListener(delegate {BasalSlider_Changed(BasalSlider.value);});
 
             var text = BasalObject.GetComponentInChildren<Text>();
-            text.text = MinBasalRate.ToString("F0") + "-" + MaxBasalRate.ToString("F1") + " U/hr";
+            text.text = MinBasalRate.ToString("F0") + "-" + MaxBasalRate.ToString("F1", GameParameters.nfi) + " U/hr";
 
 
         }

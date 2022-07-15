@@ -25,6 +25,20 @@ namespace gpredict3_gaming.Ikaros {
 
         private void Awake()
         {
+            var mealList = MealDataStorage.MealList;
+            if (mealList.Count > 0)
+            {
+                foreach (var m in mealList)
+                {
+                    Debug.Log("Meal: time " + m.MealTime + " value " + m.MealValue);
+
+                }
+            }
+            else
+            {
+                Debug.Log("Data was lost");
+            }
+
             slider = gameObject.GetComponent<Slider>();
             progressText = gameObject.GetComponentInChildren<Text>();
             OptimalLogfilePath = Path.Combine(Directory.GetParent(Application.persistentDataPath).FullName,
@@ -61,7 +75,7 @@ namespace gpredict3_gaming.Ikaros {
                     String logfilesPath = OptimalLogfilePath;
                     /*TODO - in the future when the options for BOTH_GAME will be available
                     var tmp = PlayerPrefs.GetString("ReplayLogs");
-                    logfilesPath = tmp + ", " + OptimalLogfilePath; //maybe another separator will be needed
+                    logfilesPath = tmp + "; " + OptimalLogfilePath;
                     */
                     PlayerPrefs.SetString("ReplayLogs", logfilesPath);
                     

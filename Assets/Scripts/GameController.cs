@@ -17,8 +17,8 @@ namespace gpredict3_gaming.Ikaros
     public class GameController : MonoBehaviour
     {
 
-        public PlayerController Player;
-        public TimeManager TimeCtrl;
+        //private PlayerCharacter Player;
+        private TimeManager TimeCtrl;
 
         public static float VisualSpeedMultiplier = -2.0f;
 
@@ -27,6 +27,8 @@ namespace gpredict3_gaming.Ikaros
         public UInt16 ConfigId { get; private set; }
         public UInt32 TimeStep { get; private set; }
 
+        private static readonly string[] PLAYERS_NAME = new string[] { "Ikaros", "AI" };
+
         //public String LogFilePath { get; private set; }
 
 
@@ -34,21 +36,18 @@ namespace gpredict3_gaming.Ikaros
         /// <summary>
         /// Start is called before the first frame update
         /// </summary>
-        void Start()
-        {
-            Player = FindObjectOfType<PlayerController>();
-            TimeCtrl = FindObjectOfType<TimeManager>();
-            if(PlayerPrefs.GetInt("type_game") != GameParameters.PLAYBACK)
+        //void Start()
+        void Awake()
+        {            
+            if(PlayerPrefs.GetInt("type_game") != (int)TypeGame.PLAYBACK)
             {
-                Debug.Log("Full (" + GameParameters.FULL_GAME + ") or Demo (" + GameParameters.DEMO_GAME + ") game - " + PlayerPrefs.GetInt("type_game"));
                 gameSetup(); 
             }
             else
-            {
-                Debug.Log("Playback (" + GameParameters.PLAYBACK + ") - " + PlayerPrefs.GetInt("type_game"));
+            { 
                 playbackSetup();
             }
-
+            TimeCtrl = FindObjectOfType<TimeManager>();
             Directory.SetCurrentDirectory(Directory.GetParent(Application.persistentDataPath).FullName);
 
         }
@@ -56,6 +55,7 @@ namespace gpredict3_gaming.Ikaros
 
         private void gameSetup()
         {
+            Debug.Log("Full (" + (int)TypeGame.FULL_GAME + ") or Demo (" + (int)TypeGame.DEMO_GAME + ") game - " + PlayerPrefs.GetInt("type_game"));
             ConfigClass = 1; //TODO - dependency on difficulty
             ConfigId = 1;
             TimeStep = 60000;
@@ -65,15 +65,54 @@ namespace gpredict3_gaming.Ikaros
             PlayerPrefs.SetInt("ConfigId", ConfigId);
             PlayerPrefs.SetInt("TimeStep", (int) TimeStep);
             PlayerPrefs.SetString("UserGameLog", logFilePath);
-            Player.Game = new SCGMS_Game(ConfigClass, ConfigId, TimeStep, logFilePath);
 
+            if(MealDataStorage.MealList != null)
+            {
+                MealDataStorage.clearListOfMeal();
+                //Debug.Log("The list of meal is clear.");
+            }
+            var player = FindObjectOfType<PlayerController>();
+            player.Game = new SCGMS_Game(ConfigClass, ConfigId, TimeStep, logFilePath);
         }
+
 
         private void playbackSetup()
         {
+            Debug.Log("Playback (" + (int)TypeGame.PLAYBACK + ") - " + PlayerPrefs.GetInt("type_game"));
             string logFilePath = PlayerPrefs.GetString("ReplayLogs");
-            //TODO - in the future when the options for BOTH_GAME will be available, there is needed split the string according to ", ", and create more game for more players
-            Player.Game = new SCGMS_Game(logFilePath);
+            var typeReplay = PlayerPrefs.GetInt("TypeReplay");
+            
+            
+            if(typeReplay != (int)TypeReplay.BOTH)
+            {
+                Debug.Log("Only one player in playback");
+                var player = findPlayer(PLAYERS_NAME[typeReplay]);
+                player.gameObject.SetActive(true);
+                player.Game = new SCGMS_Game(logFilePath);
+            }
+            /*TODO - in the future when the options for BOTH_GAME will be available
+            else
+            {
+                var playersArr = FindObjectsOfType<ReplayPlayerController>(true);
+                var logsArr = logFilePath.Trim().Split("; ");
+                foreach (var player in playersArr)
+                {
+                    player.gameObject.SetActive(true);
+                    var index = (PLAYERS_NAME.Equals(PLAYERS_NAME[0])) ? 0 : 1;
+                    player.Game = new SCGMS_Game(logsArr[index]);
+                }
+            }*/
+            
+        }
+
+        private ReplayPlayerController findPlayer(string name)
+        {
+            var playersArr = FindObjectsOfType<ReplayPlayerController>(true);
+            foreach (var player in playersArr)
+            {
+                if (player.name.Equals(name)) return player;
+            }
+            return null;
         }
 
 
@@ -113,5 +152,5 @@ namespace gpredict3_gaming.Ikaros
             return path;
         }*/
 
+        }
     }
-}

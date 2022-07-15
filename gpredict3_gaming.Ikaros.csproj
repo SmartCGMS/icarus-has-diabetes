@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\SliderThroughKeyChange.cs" />
     <Compile Include="Assets\Scripts\GameDummyTest\SCGMS_Game_Opt.cs" />
     <Compile Include="Assets\Scripts\GameOverMenu.cs" />
+    <Compile Include="Assets\Scripts\MealDataStorage.cs" />
     <Compile Include="Assets\Scripts\MenuButtonEvents.cs" />
     <Compile Include="Assets\Scripts\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\VersionDescription.cs" />
@@ -71,11 +72,13 @@
     <Compile Include="Assets\Scripts\ScoreDataStorage.cs" />
     <Compile Include="Assets\Scripts\GameParameters.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
+    <Compile Include="Assets\Scripts\ReplayPlayerController.cs" />
     <Compile Include="Assets\Scripts\Enumeration.cs" />
     <Compile Include="Assets\Scripts\TouchControls.cs" />
     <Compile Include="Assets\Scripts\CurveGenerator.cs" />
     <Compile Include="Assets\Scripts\PlaybackManager.cs" />
     <Compile Include="Assets\Scripts\VersionController.cs" />
+    <Compile Include="Assets\Scripts\PlayerCharacter.cs" />
     <Compile Include="Assets\Scripts\GameDummyTest\SCGMS_Game.cs" />
     <Compile Include="Assets\Scripts\ProgressBar.cs" />
     <Compile Include="Assets\Scripts\ProfileManager.cs" />

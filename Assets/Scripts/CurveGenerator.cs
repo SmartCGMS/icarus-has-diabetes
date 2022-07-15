@@ -18,7 +18,7 @@ namespace gpredict3_gaming.Ikaros
         /// <summary>
         /// The controller of player
         /// </summary>
-        private PlayerController PlayerCtrl;
+        private PlayerCharacter PlayerCtrl;
 
         /// <summary>
         /// Line renderer for curve which represents ideal BG
@@ -65,11 +65,11 @@ namespace gpredict3_gaming.Ikaros
         void Start()
         {
             InitializeComponent();
-            SimulationStep = TimeCtrl.GetSimulationTickIntervalSecs()/2;
+            SimulationStep = TimeManager.SimulationTickIntervalSecs/2;
             //Difficulty = PlayerPrefs.GetFloat("difficulty"); // this line of code was used when the curve affected the difficulty of the game
 
-            GeneratePtsPerlinInSimTicks(TimeCtrl.GetMaxGameTime() + 1, SimulationStep);
-            GenerateBGCurve(SimulationStep, TimeCtrl.GetInterpolationTickIntervalSecs(), -GameController.VisualSpeedMultiplier);
+            GeneratePtsPerlinInSimTicks(TimeCtrl.MaxGameTime + 1, SimulationStep);
+            GenerateBGCurve(SimulationStep, TimeManager.InterpolationTickIntervalSecs, -GameController.VisualSpeedMultiplier);
 
             DetermineStartPositionOfCurve();
             PlacementFinishBanner();
@@ -80,7 +80,7 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         private void setParameters()
         {
-            if (PlayerPrefs.GetInt("type_game") != GameParameters.PLAYBACK)  //if (!isPlayback)
+            if (PlayerPrefs.GetInt("type_game") != (int)TypeGame.PLAYBACK)  //if (!isPlayback)
             {
                 Debug.Log("Generate new parameters for curve");
                 var rnd = new System.Random();
@@ -107,9 +107,9 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         private void Update()
         {
-            transform.position = new Vector3(StartPosition.x + TimeCtrl.GetGameTime() * GameController.VisualSpeedMultiplier, StartPosition.y, StartPosition.z);
+            transform.position = new Vector3(StartPosition.x + TimeCtrl.GameTime * GameController.VisualSpeedMultiplier, StartPosition.y, StartPosition.z);
 
-            Finish.transform.position = new Vector3(FinishStartPosition.x + TimeCtrl.GetGameTime() * GameController.VisualSpeedMultiplier, FinishStartPosition.y, FinishStartPosition.z);
+            Finish.transform.position = new Vector3(FinishStartPosition.x + TimeCtrl.GameTime * GameController.VisualSpeedMultiplier, FinishStartPosition.y, FinishStartPosition.z);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace gpredict3_gaming.Ikaros
         void InitializeComponent()
         {
             TimeCtrl = FindObjectOfType<TimeManager>();
-            PlayerCtrl = FindObjectOfType<PlayerController>();
+            PlayerCtrl = FindObjectOfType<PlayerCharacter>();
             BGCurveRenderer = GetComponent<LineRenderer>();
             setParameters();
         }
@@ -128,7 +128,7 @@ namespace gpredict3_gaming.Ikaros
         /// </summary>
         void DetermineStartPositionOfCurve()
         {
-            StartPosition = new Vector3(-PlayerCtrl.GetGameAreaHalfWidth() * 0.5f, 0f, 0f);
+            StartPosition = new Vector3(-PlayerCtrl.GameAreaHalfWidth * 0.5f, 0f, 0f);
             transform.position = StartPosition;
 
         }
@@ -140,7 +140,7 @@ namespace gpredict3_gaming.Ikaros
         {
             var finishRenderer = Finish.GetComponent<SpriteRenderer>();
             var finishSize = new Vector2(finishRenderer.bounds.size.x, finishRenderer.bounds.size.y);
-            FinishStartPosition = new Vector3(-PlayerCtrl.GetGameAreaHalfWidth() * 0.5f - (TimeCtrl.GetMaxGameTime() + 1) * GameController.VisualSpeedMultiplier,
+            FinishStartPosition = new Vector3(-PlayerCtrl.GameAreaHalfWidth * 0.5f - (TimeCtrl.MaxGameTime + 1) * GameController.VisualSpeedMultiplier,
                 BGCurveInSimTicks[BGCurveInSimTicks.Length - 1].y + finishSize.y * 0.5f);
             Finish.transform.position = FinishStartPosition;
 
@@ -161,7 +161,7 @@ namespace gpredict3_gaming.Ikaros
             {
                 var simTime = i * simStep;
                 var posX = simTime * CurveWavy;
-                float posY = PlayerCtrl.GetNormalLevel() + CurveHeight * PlayerCtrl.GetGameAreaHeight() * (Mathf.PerlinNoise(posX, CurveContour)-0.5f);
+                float posY = PlayerCtrl.NormalLevel + CurveHeight * PlayerCtrl.GameAreaHeight * (Mathf.PerlinNoise(posX, CurveContour)-0.5f);
                 BGCurveInSimTicks[i] = new Vector3(simTime, posY);
             }
         }
