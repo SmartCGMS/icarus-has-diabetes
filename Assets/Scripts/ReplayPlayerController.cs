@@ -13,6 +13,8 @@ namespace gpredict3_gaming.Ikaros
     {
         private float SugarEffectValue = -1.0f;
         private float BolusEffectValue = -1.0f;
+        private Text SugarEffectText;
+        private Text BolusEffectText;
         public GameObject Legend;
 
         public GameObject Basal;
@@ -20,20 +22,24 @@ namespace gpredict3_gaming.Ikaros
         private Text BasalText;
         private string BasalStartText;
 
+        private static readonly float Margin = 20.0f, Space = 20.0f;
         public void Awake()
         {
             base.Awake();
+            BasalInitialization();
+            EffectInitialization();
             var typeReplay = PlayerPrefs.GetInt("TypeReplay");
             if (typeReplay != (int) TypeReplay.BOTH)
             {
                 var transformLegend = Legend.GetComponent<RectTransform>();
-                transformLegend.anchoredPosition = new Vector2(20, -20);
+                transformLegend.anchoredPosition = new Vector2(Margin, -Margin);
                 var transformBasal = Basal.GetComponent<RectTransform>();
-                transformBasal.anchoredPosition = new Vector2(368, -122);
+                var transformBasalText = BasalText.GetComponent<RectTransform>();
+                transformBasal.anchoredPosition = new Vector2((transformBasal.rect.height + Space)/2, -transformBasalText.rect.height/2); //x-coord use height of basal slider due to rotation
             }
             Legend.SetActive(true);
-            BasalInitialization();
-
+            Basal.SetActive(true);
+            
         }
 
 
@@ -105,6 +111,7 @@ namespace gpredict3_gaming.Ikaros
         {
             SugarEffectStartTime = TimeCtrl.GetActualTime();
             SugarEffectValue = (float)val;
+            SugarEffectText.text = Math.Round(SugarEffectValue).ToString("F0");
         }
 
         protected override void ResetCarbEffect()
@@ -117,6 +124,7 @@ namespace gpredict3_gaming.Ikaros
         {
             BolusEffectStartTime = TimeCtrl.GetActualTime();
             BolusEffectValue = (float)val;
+            BolusEffectText.text = Math.Round(BolusEffectValue).ToString("F0");
         }
 
         protected override void ResetBolusEffect()
@@ -129,18 +137,23 @@ namespace gpredict3_gaming.Ikaros
         {
             base.ChangeBasal(newBasal);
             BasalSlider.value = newBasal;
-            BasalText.text = BasalStartText +newBasal.ToString("F1",GameParameters.nfi) + " U/hr";
+            BasalText.text = BasalStartText + newBasal.ToString("F1",GameParameters.nfi) + " U/hr";
         }
 
         private void BasalInitialization()
         {
-            Basal.SetActive(true);
             BasalSlider = Basal.GetComponent<Slider>();
             BasalSlider.minValue = TouchControls.MinBasalRate;
             BasalSlider.maxValue = TouchControls.MaxBasalRate;
             BasalText = Basal.GetComponentInChildren<Text>();
             BasalStartText = BasalText.text + System.Environment.NewLine;
             BasalText.text = BasalStartText + " 0.0 U/hr";
+        }
+
+        private void EffectInitialization()
+        {
+            BolusEffectText = Bolus.GetComponentInChildren<Text>();
+            SugarEffectText = Sugar.GetComponentInChildren<Text>();
         }
 
 

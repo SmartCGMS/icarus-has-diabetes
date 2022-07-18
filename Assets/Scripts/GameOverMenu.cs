@@ -84,7 +84,7 @@ namespace gpredict3_gaming.Ikaros
                                           nickname = nickname,
                                           difficulty = PlayerPrefs.GetInt("difficulty_id"),
                                           date = dateTime.ToString("yyyy-MM-dd HH:mm:ss") };
-                CopyLogAndSubmit(dateTime);
+                //CopyLogAndSubmit(dateTime);//!!!!!!!!!tohle po odlazeni potreba odkomentovat
             }
             else
             {
