@@ -32,7 +32,7 @@ namespace gpredict3_gaming.Ikaros
         public void onPlayClick()
         {
             Toggle toggle = toggleGroup.ActiveToggles().FirstOrDefault();
-            Debug.Log("The choice " + toggle.GetComponentInChildren<Text>().text + " will be replay");
+            //Debug.Log("The choice " + toggle.GetComponentInChildren<Text>().text + " will be replay");
 
             PlayerPrefs.SetInt("type_game", (int)TypeGame.PLAYBACK);
 

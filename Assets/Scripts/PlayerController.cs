@@ -184,6 +184,7 @@ namespace gpredict3_gaming.Ikaros
         public override void ChangeBasal(float newBasal)
         {
             base.ChangeBasal(newBasal);
+            //Debug.Log("Basal: " + newBasal);
             ChangeBasalTime = TimeCtrl.GetActualTime();
             ChangeBasalWaiting = true;
         }

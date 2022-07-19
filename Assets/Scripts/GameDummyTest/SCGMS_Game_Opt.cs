@@ -23,7 +23,10 @@ namespace GameDummyTest
         [DllImport("game-wrapper", EntryPoint = "scgms_game_get_optimize_status")]
         private static extern Int32 Get_Optimize_Status(IntPtr gameopt, out UInt32 status, out double progress_pct);
 
-        [DllImport("game-wrapper", EntryPoint = "scgms_game_optimizer_terminate")]
+        [DllImport("game-wrapper", EntryPoint = "scgms_game_cancel_optimize")]
+        private static extern Int32 Cancel_Optimize(IntPtr gameopt, Int32 wait_for_cancel);
+		
+		[DllImport("game-wrapper", EntryPoint = "scgms_game_optimizer_terminate")]
         private static extern Int32 Terminate(IntPtr gameopt);
 
         // internal instance of game optimizer; used only as a first ("thiscall") parameter of external function calls
@@ -66,6 +69,18 @@ namespace GameDummyTest
 
             return (Optimizer_Status)status;
         }
+
+        /// <summary>
+        /// Terminates the optimalization, if there is any in progress
+        /// </summary>
+        /// <param name="wait_for_cancel">whould we wait for the optimalization to be cancelled?</param>
+        /// <returns>success indicator</returns>
+		public bool Cancel_Optimalization(bool wait_for_cancel)
+		{
+			var status = Cancel_Optimize(GameOptInstance, wait_for_cancel ? 1 : 0);
+
+            return status != 0;
+		}
 
         /// <summary>
         /// When the optimalization ends, this method should be called in order to finalize outputs and terminate the wrapper

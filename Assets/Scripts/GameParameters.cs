@@ -26,7 +26,7 @@ namespace gpredict3_gaming.Ikaros
 
     public class GameParameters
     {
-        public static readonly float GAME_TIME = 10.0f;  //for development purposes 120.0f;
+        public static readonly float GAME_TIME = 120.0f;
         public static readonly float DEMO_GAME_TIME = 20.0f;
 
         public static readonly float DIFFICULTY_EASY = 0.2f;
@@ -78,7 +78,7 @@ namespace gpredict3_gaming.Ikaros
         public static readonly string OPTIMIZED_GAME = "Option2";
         public static readonly string BOTH_GAME = "Option3";
         public static readonly string OPT_LOGFILE = "optimalGame";
-        public static readonly UInt16 DEGREE_OF_OPT = 50;
+        public static readonly UInt16 DEGREE_OF_OPT = 10;
 
 
 

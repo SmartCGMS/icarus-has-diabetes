@@ -37,7 +37,7 @@ namespace gpredict3_gaming.Ikaros
         private static readonly int[] SugarValues = new int[] { 5, 10, 15, 20, 30 };
         private static readonly KeyCode[] BolusKeys = new KeyCode[] { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T };
         private static readonly KeyCode[] SugarKeys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G };
-        private static readonly float StepBasalInPercent = 0.01f;
+        private static readonly float StepBasalInPercent = 0.005f;
         private static readonly KeyCode basalInc = KeyCode.UpArrow;
         private static readonly KeyCode basalDec = KeyCode.DownArrow;
 

@@ -50,7 +50,9 @@ namespace gpredict3_gaming.Ikaros {
             try {
                 if (Input.GetKeyDown(KeyCode.Escape)) //case when the player want to delete the chosen operation
                 {
-                    //!!!!TODO - tady je potreba dodat volani metody pro ukonceni optimizeru, az bude
+                    AsyncCancel handler = opt.Cancel_Optimalization;
+                    bool res = handler(true);
+                    Debug.Log("Canceled. ");
                     SceneManager.LoadScene(GameParameters.MAIN_MENU_SCENE);
                 }
 
@@ -63,7 +65,7 @@ namespace gpredict3_gaming.Ikaros {
                     var progressInPercent = (int) Math.Round(currentProgress * 100);
                     progressText.text = progressInPercent + " %";
                 }
-                else //otherwise, the output is finalized and the playback scene is loaded
+                else if(status == SCGMS_Game_Opt.Optimizer_Status.Success) //otherwise, the output is finalized and the playback scene is loaded
                 {
                     opt.Finalize_Output();
                     String logfilesPath = OptimalLogfilePath;
@@ -77,12 +79,19 @@ namespace gpredict3_gaming.Ikaros {
                     
                     SceneManager.LoadScene(GameParameters.PLAYBACK_SCENE);
                 }
+                else if(status == SCGMS_Game_Opt.Optimizer_Status.Failed)
+                {
+                    SceneManager.LoadScene(GameParameters.MAIN_MENU_SCENE);
+                }
             }
             catch (Exception ex)
             {
                 Debug.Log("Optimizer error: " + ex.Message);
             }
         }
+
+
+        private delegate bool AsyncCancel(bool wait_for_cancel);
 
 
 

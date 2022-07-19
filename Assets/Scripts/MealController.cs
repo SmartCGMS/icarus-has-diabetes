@@ -62,7 +62,7 @@ namespace gpredict3_gaming.Ikaros
                 var meal = MealDataStorage.removeFirstMeal();
                 NextMealTime = meal.MealTime;
                 NextMealValue = meal.MealValue;
-                Debug.Log("Scheduled meal at time " + NextMealTime + ", the size of meal is " + NextMealValue); 
+                //Debug.Log("Scheduled meal at time " + NextMealTime + ", the size of meal is " + NextMealValue); 
             }
         }
 
