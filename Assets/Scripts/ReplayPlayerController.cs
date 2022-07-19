@@ -9,20 +9,29 @@ using UnityEditorInternal;
 namespace gpredict3_gaming.Ikaros
 {
     //[RequireComponent(typeof(Rigidbody2D))]
+    /// <summary>
+    /// Class which represents the character in playback mode
+    /// </summary>
     public class ReplayPlayerController : PlayerCharacter
     {
+        //carbs and bolus
         private float SugarEffectValue = -1.0f;
         private float BolusEffectValue = -1.0f;
         private Text SugarEffectText;
         private Text BolusEffectText;
         public GameObject Legend;
 
+        //basal
         public GameObject Basal;
         private Slider BasalSlider;
         private Text BasalText;
         private string BasalStartText;
 
         private static readonly float Margin = 20.0f, Space = 20.0f;
+
+        /// <summary>
+        /// Awake is called when the script instance is being loaded.
+        /// </summary>
         public void Awake()
         {
             base.Awake();
@@ -43,10 +52,12 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
-
+        /// <summary>
+        /// Player reaction to time ticks marked as "simulation" (the new values are obtained from the CGMS simulation on the background)
+        /// </summary>
+        /// <param name="gameTime">actual game time </param>
         public override void OnSimulationTick(float gameTime)
         {
-            //TODO: ??? musim prozkoumat, zda to tu ma byt
             if (!isSimulationInitialized)
             {
                 isSimulationInitialized = true;
@@ -64,7 +75,7 @@ namespace gpredict3_gaming.Ikaros
                         meal += val;
                         
                     }
-                    Debug.Log("Meal Log - Val: " + meal + " time: " + gameTime);
+                    //Debug.Log("Meal Log - Val: " + meal + " time: " + gameTime);
                 }
 
                 if (Game.CarbsRescue.Count > 0)
@@ -106,7 +117,10 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
-
+        /// <summary>
+        /// Set the game effect for carbs
+        /// </summary>
+        /// <param name="val">amount of carbs</param>
         private void AddCarbEffect(double val)
         {
             SugarEffectStartTime = TimeCtrl.GetActualTime();
@@ -114,12 +128,19 @@ namespace gpredict3_gaming.Ikaros
             SugarEffectText.text = Math.Round(SugarEffectValue).ToString("F0");
         }
 
+        /// <summary>
+        /// Reset of game effect for carbs
+        /// </summary>
         protected override void ResetCarbEffect()
         {
             SugarEffectStartTime = -1;
             SugarEffectValue = -1;
         }
 
+        /// <summary>
+        /// Set the game effect for bolus
+        /// </summary>
+        /// <param name="val">size of bolus</param>
         private void AddBolusEffect(double val)
         {
             BolusEffectStartTime = TimeCtrl.GetActualTime();
@@ -127,12 +148,19 @@ namespace gpredict3_gaming.Ikaros
             BolusEffectText.text = Math.Round(BolusEffectValue).ToString("F0");
         }
 
+        /// <summary>
+        /// Reset of game effect for bolus
+        /// </summary>
         protected override void ResetBolusEffect()
         {
             BolusEffectStartTime = -1;
             BolusEffectValue = -1;
         }
 
+        /// <summary>
+        /// Change value of basal
+        /// </summary>
+        /// <param name="newBasal">the new basal value</param>
         public override void ChangeBasal(float newBasal)
         {
             base.ChangeBasal(newBasal);
@@ -140,16 +168,22 @@ namespace gpredict3_gaming.Ikaros
             BasalText.text = BasalStartText + newBasal.ToString("F1",GameParameters.nfi) + " U/hr";
         }
 
+        /// <summary>
+        /// Initialization of basal slider
+        /// </summary>
         private void BasalInitialization()
         {
             BasalSlider = Basal.GetComponent<Slider>();
-            BasalSlider.minValue = TouchControls.MinBasalRate;
-            BasalSlider.maxValue = TouchControls.MaxBasalRate;
+            BasalSlider.minValue = GameParameters.MIN_BASAL_RATE;
+            BasalSlider.maxValue = GameParameters.MAX_BASAL_RATE;
             BasalText = Basal.GetComponentInChildren<Text>();
             BasalStartText = BasalText.text + System.Environment.NewLine;
             BasalText.text = BasalStartText + " 0.0 U/hr";
         }
 
+        /// <summary>
+        /// Initialization of game objects for effects
+        /// </summary>
         private void EffectInitialization()
         {
             BolusEffectText = Bolus.GetComponentInChildren<Text>();

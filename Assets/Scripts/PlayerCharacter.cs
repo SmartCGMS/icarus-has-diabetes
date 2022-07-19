@@ -8,31 +8,39 @@ using UnityEditorInternal;
 
 namespace gpredict3_gaming.Ikaros
 {
+    /// <summary>
+    /// Abstract class which represents one character
+    /// </summary>
     //[RequireComponent(typeof(Rigidbody2D))]
     public abstract class PlayerCharacter : MonoBehaviour
     {
+        // animated avatar
         protected Animator Animator;
+
+
+        // SCGMS game which is affected the behavior of player
         public SCGMS_Game Game { get; set; }
 
+        // Speed of bird wings
         protected float SpeedOfFly;
 
-        //false if it is the first calling of method OnSimulationTick
+        // false if it is the first calling of method OnSimulationTick
         protected bool isSimulationInitialized = false;
 
-        //true if the patient dead
+        // true if the patient dead
         public bool IsPatientDead { get; set; } = false;
 
-        //basal
+        // basal
         protected float BasalRate = 0.0f;
 
-        //scheduled bolus
+        // scheduled bolus
         protected float BolusEffectStartTime = -1.0f;
 
-        //scheduled sugar
+        // scheduled sugar
         protected float SugarEffectStartTime = -1.0f;
 
 
-        //position of player - current and future
+        // position of player - current and future
         protected float LastPosY = 0.0f;
         protected float FuturePosY = 0.0f;
         protected float FuturePosTime = 0.0f;
@@ -47,22 +55,25 @@ namespace gpredict3_gaming.Ikaros
         protected float GameAreaCoef { get; private set; }
 
 
-
+        // dimensions of game objects
         protected Vector2 PlayerSize, BolusEffectSize, SugarEffectSize, MealEffectSize;
 
+        // management of meal
         public MealController MealCtrl;
+        // management of time
         public TimeManager TimeCtrl;
+        // the ideal flight level
         public CurveGenerator CurveBG;
 
         protected static readonly float MinMealScale = 1f;
         protected static readonly float MaxMealScale = 2f;
 
-
+        //game objects for effects
         public GameObject Sugar;
         public GameObject Bolus;
         public GameObject Meal;
 
-        //set color vision
+        //set "color vision"
         public GameObject Healthy; 
         public Image HealthyIM;
         protected bool isHealthyActive = false;
@@ -80,7 +91,9 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
-
+        /// <summary>
+        /// Initialization of game objects
+        /// </summary>
         private void InitializeComponents()
         {
             Animator = GetComponent<Animator>();
@@ -96,6 +109,9 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
+        /// <summary>
+        /// Initialization of dimensions of game area and game objects
+        /// </summary>
         private void InitializeDimension()
         {
             var colliderSize = FindObjectOfType<BoxCollider2D>().bounds.size.y;
@@ -121,6 +137,9 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
+        /// <summary>
+        /// Initialization of positions of game objects
+        /// </summary>
         private void InitializePositionsOfGameObjects()
         {
             transform.position = new Vector3(-GameAreaHalfWidth * 0.5f, NormalLevel);
@@ -129,7 +148,10 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
-
+        /// <summary>
+        /// Change value of basal. Moreover, the speed of bird wings is change due to basal value.
+        /// </summary>
+        /// <param name="newBasal">the new basal value</param>
         public virtual void ChangeBasal(float newBasal)
         {
             BasalRate = newBasal;
@@ -139,19 +161,29 @@ namespace gpredict3_gaming.Ikaros
 
 
 
-
+        /// <summary>
+        /// Reset of game effect for bolus
+        /// </summary>
         protected abstract void ResetBolusEffect();
+        /// <summary>
+        /// Reset of game effect for carbs
+        /// </summary>
         protected abstract void ResetCarbEffect();
 
 
 
-
+        /// <summary>
+        /// Compute the speed of bird wings according to basal value
+        /// </summary>
         private void ComputeSpeedOfFly()
         {
             SpeedOfFly = GameParameters.MIN_SPEED_OF_FLY + (GameParameters.MAX_SPEED_OF_FLY - GameParameters.MIN_SPEED_OF_FLY) * BasalRate / (GameParameters.MAX_BASAL_RATE - GameParameters.MIN_BASAL_RATE);
         }
 
 
+        /// <summary>
+        /// Player reaction to time ticks marked as "healthy" (the bad vision when the player is in the state hypoglycemia or hyperglycemia)
+        /// </summary>
         public void OnHealthyTick()
         {
             if (BGValue <= GameParameters.HYPOGLYCEMIA)
@@ -171,6 +203,7 @@ namespace gpredict3_gaming.Ikaros
             }
             else
             {
+                //normal vision
                 HealthyIM.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             }
 
@@ -178,6 +211,9 @@ namespace gpredict3_gaming.Ikaros
             Healthy.SetActive(isHealthyActive);
         }
 
+        /// <summary>
+        /// Setting the BG value and the position of player according to this value
+        /// </summary>
         public virtual void SetMMolLValue(double val)
         {
             if (val <= 0) IsPatientDead = true;
@@ -189,8 +225,8 @@ namespace gpredict3_gaming.Ikaros
 
             var PosOfBGPt = CurveBG.GetYValue(TimeCtrl.GameTime);
             FuturePosY = PosOfBGPt - (float)(val - ScoreManager.TargetMmolL) * GameAreaCoef;  // note the coordinates are inverted
-            //ScoreManager.IncreaseScore(val);
         }
+
 
         public void SetIOBValue(double val)
         {
@@ -202,9 +238,16 @@ namespace gpredict3_gaming.Ikaros
             //TODO - maybe in the future
         }
 
-
+        /// <summary>
+        /// Player reaction to time ticks marked as "simulation" (the new values are inserted to/obtained from the CGMS simulation on the background)
+        /// </summary>
+        /// <param name="gameTime">actual game time </param>
         public abstract void OnSimulationTick(float gameTime);
 
+        /// <summary>
+        /// Player reaction to time ticks marked as "interpolation" (the values are interpolated between two simulation steps)
+        /// </summary>
+        /// <param name="deltaGameTime">time between two interpolation steps</param>
         public void OnInterpolationTick(float deltaGameTime)
         {
             FuturePosTime += deltaGameTime;
@@ -242,7 +285,7 @@ namespace gpredict3_gaming.Ikaros
                 Bolus.SetActive(false);
             }
 
-
+            //carbs sprite position
             if (SugarEffectStartTime > 0)
             {
                 Sugar.transform.position = transform.position + new Vector3(0, 0.75f * PlayerSize.y + 0.5f * SugarEffectSize.y);

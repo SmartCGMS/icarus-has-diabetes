@@ -18,6 +18,9 @@ namespace gpredict3_gaming.Ikaros
         public double score;
     }
 
+    /// <summary>
+    /// Storage for all records of scores for different difficulties
+    /// </summary>
     [System.Serializable]
     public class AllScores
     {
@@ -26,19 +29,28 @@ namespace gpredict3_gaming.Ikaros
         public List<ScoreEntry> hard;
     }
 
+
     public class Response
     {
         public AllScores scoreboard;
     }
 
+
+    /// <summary>
+    /// Management storage of scores
+    /// </summary>
     public class ScoreDataStorage : MonoBehaviour
     {
         private static ScoreDataStorage localInstance;
         public static ScoreDataStorage storage { get { return localInstance; } }
 
+
         private static string HallOfFameFilename = "hallOfFame";
         private static string HallOfFameExt = ".json";
 
+        /// <summary>
+        /// Awake is called when the script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             if(localInstance != null && localInstance != this)
@@ -52,7 +64,12 @@ namespace gpredict3_gaming.Ikaros
             
         }
 
-
+        /// <summary>
+        /// Add the new record of score to local storage
+        /// </summary>
+        /// <param name="score">number of points</param>
+        /// <param name="name">nickname</param>
+        /// <param name="difficulty">difficulty of game</param>
         public static void AddLocalScoreEntry(int score, string name, string difficulty)
         {
             difficulty = difficulty.ToLower();
@@ -69,6 +86,13 @@ namespace gpredict3_gaming.Ikaros
             SaveLocalScores(allScores);
         }
 
+        /// <summary>
+        /// Search local ranking depending on the achieved score
+        /// </summary>
+        /// <param name="score">number of points</param>
+        /// <param name="name">nickname</param>
+        /// <param name="difficulty">difficulty of game</param>
+        /// <returns>local ranking</returns>
         public static string GetLocalRank(int score, string name, string difficulty)
         {
             difficulty = difficulty.ToLower();
@@ -93,6 +117,11 @@ namespace gpredict3_gaming.Ikaros
             return RankToString(rank);
         }
 
+        /// <summary>
+        /// Convert rank to string
+        /// </summary>
+        /// <param name="rank">rank</param>
+        /// <returns>rank as string</returns>
         public static string RankToString(int rank)
         {
             string rankString;
@@ -107,6 +136,10 @@ namespace gpredict3_gaming.Ikaros
             return rankString;
         }
 
+        /// <summary>
+        /// Loading all saved local scores from JSON file
+        /// </summary>
+        /// <returns>All saved records</returns>
         public static AllScores LoadAllSavedLocalScores()
         {
             string directory = Directory.GetParent(Application.persistentDataPath).FullName;
@@ -127,6 +160,10 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
+        /// <summary>
+        /// Loading all saved global scores from JSON file on server
+        /// </summary>
+        /// <returns>All saved records</returns>
         public static AllScores LoadAllSavedGlobalScores()
         {
             //AllScores allScores = null;
@@ -144,6 +181,11 @@ namespace gpredict3_gaming.Ikaros
             return response.scoreboard;
         }
 
+        /// <summary>
+        /// Loading chosen type of scores
+        /// </summary>
+        /// <param name="typeScore">type of score</param>
+        /// <returns>chosen scores</returns>
         public static AllScores LoadAllSavedScores(string typeScore)
         {
             AllScores allScores = null;
@@ -159,6 +201,12 @@ namespace gpredict3_gaming.Ikaros
             return allScores;
         }
 
+
+        /// <summary>
+        /// Obtain scoreboard from JSON file on server
+        /// </summary>
+        /// <param name="response"></param>
+        /// <returns></returns>
         IEnumerator GetGlobalScoreboard(Response response)
         {
             UnityWebRequest request = UnityWebRequest.Get(GameParameters.LOG_URL_BASE + GameParameters.GLOBAL_SCOREBOARD_LOCATION);
@@ -182,7 +230,10 @@ namespace gpredict3_gaming.Ikaros
             
         }
 
-
+        /// <summary>
+        /// Save all local scores to JSON file
+        /// </summary>
+        /// <param name="allScores">storage of all scores</param>
         private static void SaveLocalScores(AllScores allScores)
         {
             string directory = Directory.GetParent(Application.persistentDataPath).FullName;

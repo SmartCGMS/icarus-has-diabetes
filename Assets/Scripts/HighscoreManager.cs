@@ -7,12 +7,16 @@ using System.IO;
 
 namespace gpredict3_gaming.Ikaros
 {
+    /// <summary>
+    /// Management of the hall of fame
+    /// </summary>
     public class HighscoreManager : MonoBehaviour
     {
 
         private Transform EntryContainer;
         private Transform EntryTemplate;
 
+        //Used game objects
         public string EntryContainerName;
         public string EntryTemplateName;
         public string RankName;
@@ -44,6 +48,9 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
+        /// <summary>
+        /// Create the table of hall of fame for chosen difficulty and type
+        /// </summary>
         private void GenerateHighscoreTable()
         {
             
@@ -65,6 +72,10 @@ namespace gpredict3_gaming.Ikaros
             }
         }
 
+        /// <summary>
+        /// Clear the whole table
+        /// </summary>
+        /// <param name="transformList"></param>
         private void ClearTable(List<Transform> transformList)
         {
             if (HighscoreEntryTransformList != null)
@@ -77,6 +88,12 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
+        /// <summary>
+        /// Create one row in the table
+        /// </summary>
+        /// <param name="scoreEntry"></param>
+        /// <param name="container"></param>
+        /// <param name="transformList"></param>
         private void CreateHighscoreEntryTransform(ScoreEntry scoreEntry, Transform container, List<Transform> transformList)
         {
             Transform entryTransform = Instantiate(EntryTemplate, container);
@@ -118,9 +135,12 @@ namespace gpredict3_gaming.Ikaros
             transformList.Add(entryTransform);
         }
 
-        
 
 
+        /// <summary>
+        /// Switch between scores for the different difficulty of the game
+        /// </summary>
+        /// <param name="sender">difficulty</param>
         public void ChangeDifficultForHighscores(Toggle sender)
         {
             if (sender.isOn)
@@ -130,7 +150,10 @@ namespace gpredict3_gaming.Ikaros
             }
         }
 
-
+        /// <summary>
+        /// Switch between local and global score
+        /// </summary>
+        /// <param name="sender">type of score</param>
         public void ChangeTypeHighscores(Toggle sender)
         {
             if (sender.isOn)

@@ -17,6 +17,9 @@ namespace gpredict3_gaming.Ikaros
         public static readonly double TargetMmolL = 5.5;
         public static readonly double MaxDiffMmolL = 5.0;
 
+        /// <summary>
+        /// Initialization of score label
+        /// </summary>
         private void Start()
         {
             ScoreText = GetComponent<Text>();
@@ -24,6 +27,9 @@ namespace gpredict3_gaming.Ikaros
             ScoreCoef = 1.0f;
         }
 
+        /// <summary>
+        /// Update the score label
+        /// </summary>
         private void Update()
         {
             if (Score < 0)
@@ -51,7 +57,9 @@ namespace gpredict3_gaming.Ikaros
             Score += MaxScore  * (1.0 - (diff/MaxDiffMmolL)) * ScoreCoef;
         }
 
-
+        /// <summary>
+        /// Reset the score
+        /// </summary>
         public static void Reset()
         {
             Score = 0;

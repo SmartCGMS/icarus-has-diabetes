@@ -10,16 +10,25 @@ using UnityEngine.SceneManagement;
 
 namespace gpredict3_gaming.Ikaros
 {
+    /// <summary>
+    /// Class which permit to choose the type of playback
+    /// </summary>
     public class PlaybackManager : MonoBehaviour
     {
         ToggleGroup toggleGroup;
 
-        // Start is called before the first frame update
+        /// <summary>
+        /// Start is called before the first frame update
+        /// </summary>
         void Start()
         {
             toggleGroup = GetComponentInChildren<ToggleGroup>();
         }
 
+        /// <summary>
+        /// The reaction on the "play" button click
+        /// The playback of the selected players will be started.
+        /// </summary>
         public void onPlayClick()
         {
             Toggle toggle = toggleGroup.ActiveToggles().FirstOrDefault();
@@ -38,13 +47,12 @@ namespace gpredict3_gaming.Ikaros
                 PlayerPrefs.SetInt("TypeReplay", (int)TypeReplay.AI);
                 SceneManager.LoadScene(GameParameters.LOADING_SCENE);
             }
-            /*TODO - in the future when the options for BOTH_GAME will be available
             else if (toggle.name.Equals(GameParameters.BOTH_GAME))
             {
                 PlayerPrefs.SetString("ReplayLogs", PlayerPrefs.GetString("UserGameLog"));
                 PlayerPrefs.SetInt("TypeReplay", (int)TypeReplay.BOTH);
                 SceneManager.LoadScene(GameParameters.LOADING_SCENE);
-            }*/
+            }
         }
     }
 

@@ -32,13 +32,11 @@ namespace gpredict3_gaming.Ikaros
         private Canvas Canvas;
         private CanvasScaler ScalerCanvas;
         
-        //bolus and sugar values and ranges of bazal
+        //bolus and sugar values and keys and keys and stepping of basal
         private static readonly int[] BolusValues = new int[] { 2, 3, 4, 5, 7 };
         private static readonly int[] SugarValues = new int[] { 5, 10, 15, 20, 30 };
         private static readonly KeyCode[] BolusKeys = new KeyCode[] { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T };
         private static readonly KeyCode[] SugarKeys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G };
-        public static readonly float MinBasalRate = 0.0f;
-        public static readonly float MaxBasalRate = 4.0f;
         private static readonly float StepBasalInPercent = 0.01f;
         private static readonly KeyCode basalInc = KeyCode.UpArrow;
         private static readonly KeyCode basalDec = KeyCode.DownArrow;
@@ -157,19 +155,19 @@ namespace gpredict3_gaming.Ikaros
             BasalObject.name = BasalLabel;
 
             //add shortcut
-            PlayerPrefs.SetFloat("stepSlider", StepBasalInPercent * (MaxBasalRate-MinBasalRate));
+            PlayerPrefs.SetFloat("stepSlider", StepBasalInPercent * (GameParameters.MAX_BASAL_RATE - GameParameters.MIN_BASAL_RATE));
             PlayerPrefs.SetString("sliderKeyDec", Enum.GetName(typeof(KeyCode), basalDec));
             PlayerPrefs.SetString("sliderKeyInc", Enum.GetName(typeof(KeyCode), basalInc));
             BasalObject.AddComponent<SliderThroughKeyChange>();
 
 
             BasalSlider = BasalObject.GetComponent<Slider>();
-            BasalSlider.minValue = MinBasalRate;
-            BasalSlider.maxValue = MaxBasalRate;
+            BasalSlider.minValue = GameParameters.MIN_BASAL_RATE;
+            BasalSlider.maxValue = GameParameters.MAX_BASAL_RATE;
             BasalSlider.onValueChanged.AddListener(delegate {BasalSlider_Changed(BasalSlider.value);});
 
             var text = BasalObject.GetComponentInChildren<Text>();
-            text.text = MinBasalRate.ToString("F0") + "-" + MaxBasalRate.ToString("F1", GameParameters.nfi) + " U/hr";
+            text.text = GameParameters.MIN_BASAL_RATE.ToString("F0") + "-" + GameParameters.MAX_BASAL_RATE.ToString("F1", GameParameters.nfi) + " U/hr";
 
 
         }

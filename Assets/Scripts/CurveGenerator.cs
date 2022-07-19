@@ -76,13 +76,13 @@ namespace gpredict3_gaming.Ikaros
         }
 
         /// <summary>
-        /// Setting parameters of the generated curve
+        /// Setting parameters of the generated curve according to type of game
         /// </summary>
         private void setParameters()
         {
-            if (PlayerPrefs.GetInt("type_game") != (int)TypeGame.PLAYBACK)  //if (!isPlayback)
+            if (PlayerPrefs.GetInt("type_game") != (int)TypeGame.PLAYBACK)  
             {
-                Debug.Log("Generate new parameters for curve");
+                //Debug.Log("Generate new parameters for curve");
                 var rnd = new System.Random();
                 CurveHeight = 0.4f; //Note: In the original version, the parameter CurveHeight was decribed the difficulty of the game(0.2f - easy; 0.4f - medium; 0.6f - hard), in the future maybe rand
                 CurveWavy = 1.0f; //How much the curve should be wavy, in the future maybe random
@@ -94,7 +94,7 @@ namespace gpredict3_gaming.Ikaros
             }
             else
             {
-                Debug.Log("Set the previous parameters for curve");
+                //Debug.Log("Set the previous parameters for curve");
                 CurveHeight = PlayerPrefs.GetFloat("CurveHeight");
                 CurveWavy = PlayerPrefs.GetFloat("CurveWavy");
                 CurveContour = PlayerPrefs.GetFloat("CurveContour");

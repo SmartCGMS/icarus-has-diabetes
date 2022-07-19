@@ -76,7 +76,12 @@ namespace gpredict3_gaming.Ikaros
             return dateTime;
         }
 
-
+        /// <summary>
+        /// Is the update needed?
+        /// </summary>
+        /// <param name="usedVersion">used version of game</param>
+        /// <param name="requiredVersion">required version of game</param>
+        /// <returns>true if the update is needed, false otherwise</returns>
         bool IsNeededUpdate(string usedVersion, string requiredVersion)
         {
             DateTime myVersion = ParseVersionToDateTime(usedVersion);
@@ -87,7 +92,9 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
-
+        /// <summary>
+        /// Download new version of game
+        /// </summary>
         public void Download()
         {
             Application.OpenURL(GameParameters.DOWNLOAD_URL);

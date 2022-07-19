@@ -13,6 +13,9 @@ namespace gpredict3_gaming.Ikaros
 
     public class GameOverMenu : MonoBehaviour
     {
+        /// <summary>
+        /// Class for storage info about game and player
+        /// </summary>
         private class Metadata
         {
             public int score;
@@ -84,7 +87,7 @@ namespace gpredict3_gaming.Ikaros
                                           nickname = nickname,
                                           difficulty = PlayerPrefs.GetInt("difficulty_id"),
                                           date = dateTime.ToString("yyyy-MM-dd HH:mm:ss") };
-                //CopyLogAndSubmit(dateTime);//!!!!!!!!!tohle po odlazeni potreba odkomentovat
+                CopyLogAndSubmit(dateTime);
             }
             else
             {
@@ -185,7 +188,10 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
-
+        /// <summary>
+        /// Copy game log to the repository and submit it on the server
+        /// </summary>
+        /// <param name="dateTime"></param>
         private void CopyLogAndSubmit(DateTime dateTime)
         {
             string sourceDir = Directory.GetParent(Application.persistentDataPath).FullName;

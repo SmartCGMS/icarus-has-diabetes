@@ -9,6 +9,9 @@ using UnityEditorInternal;
 namespace gpredict3_gaming.Ikaros
 {
     //[RequireComponent(typeof(Rigidbody2D))]
+    /// <summary>
+    /// Class which represents game character
+    /// </summary>
     public class PlayerController : PlayerCharacter
     {
         //scheduled bolus
@@ -29,7 +32,10 @@ namespace gpredict3_gaming.Ikaros
         private static readonly float NormalScoreCoef = 1.0f;
         private static readonly float PenalizationIntervalInSimTicks = 14.5f;
 
-
+        /// <summary>
+        /// Player reaction to time ticks marked as "simulation" (the new values are inserted to the CGMS simulation on the background)
+        /// </summary>
+        /// <param name="gameTime">actual game time </param>
         public override void OnSimulationTick(float gameTime)
         {
             if (!isSimulationInitialized)
@@ -47,7 +53,7 @@ namespace gpredict3_gaming.Ikaros
                 mealTime = 1 - ((Math.Abs(gameTime - MealCtrl.NextMealTime)) / TimeManager.SimulationTickIntervalSecs);
                 if (mealTime < 0) mealTime = 0.0;
                 Game.ScheduleCarbohydratesIntake(mealVal, mealTime);
-                Debug.Log("GAME - MEAL - Val: " + mealVal + " time: " + mealTime + " game time:" + gameTime + " nextMealTime: " + MealCtrl.NextMealTime);
+                //Debug.Log("GAME - MEAL - Val: " + mealVal + " time: " + mealTime + " game time:" + gameTime + " nextMealTime: " + MealCtrl.NextMealTime);
 
                 MealCtrl.IsMealScheduled = true;
             }
@@ -100,7 +106,9 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
-
+        /// <summary>
+        /// Setting the BG value and score and position of player according to this value
+        /// </summary>
         public override void SetMMolLValue(double val)
         {
             base.SetMMolLValue(val);
@@ -121,12 +129,18 @@ namespace gpredict3_gaming.Ikaros
             }
         }
 
+        /// <summary>
+        /// Reset the information about bolus when it was added to simulation
+        /// </summary>
         private void ResetBolus()
         {
             PendingBolusValue = -1;
             PendingBolusTime = -1;
         }
 
+        /// <summary>
+        /// Reset of game effect for bolus
+        /// </summary>
         protected override void ResetBolusEffect()
         {
             BolusEffectStartTime = -1;
@@ -146,17 +160,27 @@ namespace gpredict3_gaming.Ikaros
             }
         }
 
+        /// <summary>
+        /// Reset the information about carbs when it was added to simulation
+        /// </summary>
         private void ResetCarb()
         {
             PendingSugarValue = -1;
             PendingSugarTime = -1;
         }
 
+        /// <summary>
+        /// Reset of game effect for carbs
+        /// </summary>
         protected override void ResetCarbEffect()
         {
             SugarEffectStartTime = -1;
         }
 
+        /// <summary>
+        /// Change value of basal.
+        /// </summary>
+        /// <param name="newBasal">the new basal value</param>
         public override void ChangeBasal(float newBasal)
         {
             base.ChangeBasal(newBasal);
@@ -165,6 +189,9 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
+        /// <summary>
+        /// Reset the information about change of basal when it was added to simulation
+        /// </summary>
         private void ResetBasal()
         {
             ChangeBasalTime = -1;

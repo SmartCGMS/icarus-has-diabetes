@@ -38,7 +38,6 @@ namespace gpredict3_gaming.Ikaros
 
         private Text TimeText;
 
-        //public string GameOverScene;
         private PlayerCharacter[] PlayersArr; 
 
         
@@ -91,7 +90,6 @@ namespace gpredict3_gaming.Ikaros
 
             //if time to end of game is less of equal to zero, the game over scene is called
             //if the patient is dead, the game over scene is called, too
-            //if (remainTime <= 0 || PlayersArr.IsPatientDead) 
             if (remainTime <= 0 || isSomePatientDead())
             {
                 TerminateGame();
@@ -99,10 +97,9 @@ namespace gpredict3_gaming.Ikaros
                 return;
             }
 
-            //calling the OnInterpolationTick event for player
+            //calling the OnInterpolationTick event for each player
             if ((TimeLastInterpolationTick + InterpolationTickIntervalSecs) <= GameTime)
             {
-                //Player.OnInterpolationTick(GameTime-TimeLastInterpolationTick);
                 foreach(var player in PlayersArr)
                 {
                     player.OnInterpolationTick(GameTime - TimeLastInterpolationTick);
@@ -110,10 +107,9 @@ namespace gpredict3_gaming.Ikaros
                 TimeLastInterpolationTick = GameTime;
             }
 
-            //calling the OnHealthyTick event for player
+            //calling the OnHealthyTick event for each player
             if ((TimeLastHealthyTick + HealthyTickIntervalSecs) <= GameTime)
             {
-                //Player.OnHealthyTick();
                 foreach (var player in PlayersArr)
                 {
                     player.OnHealthyTick();
@@ -137,20 +133,18 @@ namespace gpredict3_gaming.Ikaros
                 return;
             }
 
-            //calling the OnSimulationTick event for player
-            //Player.OnSimulationTick(Time.time - StartTime);
+            //calling the OnSimulationTick event for each player
             foreach (var player in PlayersArr)
             {
                 player.OnSimulationTick(Time.time - StartTime);
             }
         }
 
-
+        /// <summary>
+        /// Reaction when the game is terminated
+        /// </summary>
         public void TerminateGame()
         {
-            //NativeBridge.Filter_GameInsulinTick(-1, -1, -1);
-            //NativeBridge.TerminateFilterChain();
-            //Player.Game.Terminate();
             foreach (var player in PlayersArr)
             {
                 player.Game.Terminate();
@@ -160,6 +154,10 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
+        /// <summary>
+        /// Test if there is some player who is dead
+        /// </summary>
+        /// <returns>true if any player is dead, false otherwise</returns>
         private bool isSomePatientDead()
         {
             foreach (var player in PlayersArr)
@@ -170,7 +168,10 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
-
+        /// <summary>
+        /// Determine the current game time
+        /// </summary>
+        /// <returns>current game time</returns>
         public float GetActualTime()
         {
             return Time.time - StartTime;

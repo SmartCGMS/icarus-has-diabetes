@@ -17,7 +17,6 @@ namespace gpredict3_gaming.Ikaros
     public class GameController : MonoBehaviour
     {
 
-        //private PlayerCharacter Player;
         private TimeManager TimeCtrl;
 
         public static float VisualSpeedMultiplier = -2.0f;
@@ -28,8 +27,6 @@ namespace gpredict3_gaming.Ikaros
         public UInt32 TimeStep { get; private set; }
 
         private static readonly string[] PLAYERS_NAME = new string[] { "Ikaros", "AI" };
-
-        //public String LogFilePath { get; private set; }
 
 
 
@@ -52,10 +49,12 @@ namespace gpredict3_gaming.Ikaros
 
         }
 
-
+        /// <summary>
+        /// This method sets the parameters of the game if a new full or demo game is called.
+        /// </summary>
         private void gameSetup()
         {
-            Debug.Log("Full (" + (int)TypeGame.FULL_GAME + ") or Demo (" + (int)TypeGame.DEMO_GAME + ") game - " + PlayerPrefs.GetInt("type_game"));
+            //Debug.Log("Full (" + (int)TypeGame.FULL_GAME + ") or Demo (" + (int)TypeGame.DEMO_GAME + ") game - " + PlayerPrefs.GetInt("type_game"));
             ConfigClass = 1; //TODO - dependency on difficulty
             ConfigId = 1;
             TimeStep = 60000;
@@ -76,35 +75,47 @@ namespace gpredict3_gaming.Ikaros
         }
 
 
+        /// <summary>
+        /// This method sets the parameters of the game if playback is called.
+        /// </summary>
         private void playbackSetup()
         {
-            Debug.Log("Playback (" + (int)TypeGame.PLAYBACK + ") - " + PlayerPrefs.GetInt("type_game"));
+            //Debug.Log("Playback (" + (int)TypeGame.PLAYBACK + ") - " + PlayerPrefs.GetInt("type_game"));
             string logFilePath = PlayerPrefs.GetString("ReplayLogs");
             var typeReplay = PlayerPrefs.GetInt("TypeReplay");
             
             
             if(typeReplay != (int)TypeReplay.BOTH)
             {
-                Debug.Log("Only one player in playback");
+                //Debug.Log("Only one player in playback");
                 var player = findPlayer(PLAYERS_NAME[typeReplay]);
                 player.gameObject.SetActive(true);
                 player.Game = new SCGMS_Game(logFilePath);
             }
-            /*TODO - in the future when the options for BOTH_GAME will be available
             else
             {
+                //Debug.Log("Both players in playback");
                 var playersArr = FindObjectsOfType<ReplayPlayerController>(true);
+                if(playersArr.Length != 2)
+                {
+                    throw new InvalidDataException("There is to many players");
+                }
                 var logsArr = logFilePath.Trim().Split("; ");
                 foreach (var player in playersArr)
                 {
                     player.gameObject.SetActive(true);
-                    var index = (PLAYERS_NAME.Equals(PLAYERS_NAME[0])) ? 0 : 1;
+                    var index = (player.name.Equals(PLAYERS_NAME[0])) ? 0 : 1;
                     player.Game = new SCGMS_Game(logsArr[index]);
                 }
-            }*/
+            }
             
         }
 
+        /// <summary>
+        /// The appropriate game object is looked for according the name of player
+        /// </summary>
+        /// <param name="name">name of player</param>
+        /// <returns>the game object for player</returns>
         private ReplayPlayerController findPlayer(string name)
         {
             var playersArr = FindObjectsOfType<ReplayPlayerController>(true);

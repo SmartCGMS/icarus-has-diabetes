@@ -6,6 +6,9 @@ using System;
 namespace gpredict3_gaming.Ikaros
 {
 
+    /// <summary>
+    /// Meal management
+    /// </summary>
     public class MealController : MonoBehaviour
     {
         // range of meal size
@@ -49,6 +52,9 @@ namespace gpredict3_gaming.Ikaros
             }
         }
 
+        /// <summary>
+        /// Schedule meal according to store data when the playback is called
+        /// </summary>
         public void ScheduleMeal()
         {
             if(NextMealTime < 0 && MealDataStorage.existNextMeal())
