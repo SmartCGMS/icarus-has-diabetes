@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using GameDummyTest;
-using UnityEditorInternal;
 
 namespace gpredict3_gaming.Ikaros
 {
