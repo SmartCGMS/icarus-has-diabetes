@@ -194,7 +194,7 @@ namespace gpredict3_gaming.Ikaros
         /// <param name="dateTime"></param>
         private void CopyLogAndSubmit(DateTime dateTime)
         {
-            string sourceDir = Directory.GetParent(Application.persistentDataPath).FullName;
+            string sourceDir = GameParameters.DIRECTORY;
             string destDir = Path.Combine(sourceDir, LocalDestDirName);
             string sourceFileFullPath = PlayerPrefs.GetString("UserGameLog");
             //Debug.Log(sourceDir);

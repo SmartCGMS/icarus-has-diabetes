@@ -57,6 +57,7 @@ namespace gpredict3_gaming.Ikaros
 
         public static readonly NumberFormatInfo nfi = CultureInfo.GetCultureInfo("en-GB").NumberFormat;
 
+        public static readonly string DIRECTORY = Directory.GetParent(Application.dataPath).FullName; //Directory.GetParent(Application.persistentDataPath).FullName;
         public static readonly string LOGFILE_PREFIX = "log";
         public static readonly string LOGFILE_EXT = ".txt";
 
@@ -79,6 +80,7 @@ namespace gpredict3_gaming.Ikaros
         public static readonly string BOTH_GAME = "Option3";
         public static readonly string OPT_LOGFILE = "optimalGame";
         public static readonly UInt16 DEGREE_OF_OPT = 10;
+
 
 
 

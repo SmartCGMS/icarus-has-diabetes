@@ -29,11 +29,9 @@ namespace gpredict3_gaming.Ikaros
         private static readonly string[] PLAYERS_NAME = new string[] { "Ikaros", "AI" };
 
 
-
         /// <summary>
         /// Start is called before the first frame update
         /// </summary>
-        //void Start()
         void Awake()
         {            
             if(PlayerPrefs.GetInt("type_game") != (int)TypeGame.PLAYBACK)
@@ -45,8 +43,7 @@ namespace gpredict3_gaming.Ikaros
                 playbackSetup();
             }
             TimeCtrl = FindObjectOfType<TimeManager>();
-            Directory.SetCurrentDirectory(Directory.GetParent(Application.persistentDataPath).FullName);
-
+            Directory.SetCurrentDirectory(GameParameters.DIRECTORY); //pri soucasnem nastaveni asi neni nutne
         }
 
         /// <summary>
@@ -58,12 +55,12 @@ namespace gpredict3_gaming.Ikaros
             ConfigClass = 1; //TODO - dependency on difficulty
             ConfigId = 1;
             TimeStep = 60000;
-            string logFilePath = Path.Combine(Directory.GetParent(Application.persistentDataPath).FullName,
-            GameParameters.LOGFILE_PREFIX + GameParameters.LOGFILE_EXT);
+            string logFilePath = Path.Combine(GameParameters.DIRECTORY, GameParameters.LOGFILE_PREFIX + GameParameters.LOGFILE_EXT);
             PlayerPrefs.SetInt("ConfigClass", ConfigClass);
             PlayerPrefs.SetInt("ConfigId", ConfigId);
             PlayerPrefs.SetInt("TimeStep", (int) TimeStep);
             PlayerPrefs.SetString("UserGameLog", logFilePath);
+            //Debug.Log("logfile: " + PlayerPrefs.GetString("UserGameLog"));
 
             if(MealDataStorage.MealList != null)
             {
@@ -72,6 +69,7 @@ namespace gpredict3_gaming.Ikaros
             }
             var player = FindObjectOfType<PlayerController>();
             player.Game = new SCGMS_Game(ConfigClass, ConfigId, TimeStep, logFilePath);
+            //Debug.Log("SCGMS Game was created");
         }
 
 
@@ -121,7 +119,11 @@ namespace gpredict3_gaming.Ikaros
             var playersArr = FindObjectsOfType<ReplayPlayerController>(true);
             foreach (var player in playersArr)
             {
-                if (player.name.Equals(name)) return player;
+                if (player.name.Equals(name))
+                {
+                    //Debug.Log("Player was found.");
+                    return player;
+                }
             }
             return null;
         }

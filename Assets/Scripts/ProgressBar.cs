@@ -32,8 +32,7 @@ namespace gpredict3_gaming.Ikaros {
         {
             slider = gameObject.GetComponent<Slider>();
             progressText = gameObject.GetComponentInChildren<Text>();
-            OptimalLogfilePath = Path.Combine(Directory.GetParent(Application.persistentDataPath).FullName,
-                GameParameters.OPT_LOGFILE + GameParameters.LOGFILE_EXT);
+            OptimalLogfilePath = Path.Combine(GameParameters.DIRECTORY, GameParameters.OPT_LOGFILE + GameParameters.LOGFILE_EXT);
             opt = new SCGMS_Game_Opt((ushort) PlayerPrefs.GetInt("ConfigClass"),
                         (ushort) PlayerPrefs.GetInt("ConfigId"),
                         (uint) PlayerPrefs.GetInt("TimeStep"),
