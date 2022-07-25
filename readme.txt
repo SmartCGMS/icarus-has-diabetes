@@ -1,0 +1,1 @@
+When the application is built the plugins in folder .\Builds\IkarosHasDiabetes_Data\Plugins\x86_64\ have to be rearrangement. A new folder named as "filters" has to be added, and all DLL files with exceptions game-wrapper.dll and scgms.dll have to be moved to this folder.

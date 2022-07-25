@@ -24,6 +24,7 @@ namespace gpredict3_gaming.Ikaros
         List<GameObject> SugarBtns = new List<GameObject>();
         GameObject BasalObject;
         Slider BasalSlider;
+        private Text BasalInfo;
 
         //Parent of controls
         private GameObject Touch;
@@ -109,6 +110,7 @@ namespace gpredict3_gaming.Ikaros
         /// <param name="newValue"></param>
         public void BasalSlider_Changed(float newValue)
         {
+            BasalInfo.text = newValue.ToString("F1", GameParameters.nfi) + " U/hr";
             Player.ChangeBasal(newValue);
         }
 
@@ -166,8 +168,8 @@ namespace gpredict3_gaming.Ikaros
             BasalSlider.maxValue = GameParameters.MAX_BASAL_RATE;
             BasalSlider.onValueChanged.AddListener(delegate {BasalSlider_Changed(BasalSlider.value);});
 
-            var text = BasalObject.GetComponentInChildren<Text>();
-            text.text = GameParameters.MIN_BASAL_RATE.ToString("F0") + "-" + GameParameters.MAX_BASAL_RATE.ToString("F1", GameParameters.nfi) + " U/hr";
+            BasalInfo = BasalObject.GetComponentInChildren<Text>();
+            BasalInfo.text = GameParameters.MIN_BASAL_RATE.ToString("F0") + " U/hr";//GameParameters.MIN_BASAL_RATE.ToString("F0") + "-" + GameParameters.MAX_BASAL_RATE.ToString("F1", GameParameters.nfi) + " U/hr";
 
 
         }

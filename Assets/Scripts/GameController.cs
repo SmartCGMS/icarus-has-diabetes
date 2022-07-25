@@ -60,7 +60,6 @@ namespace gpredict3_gaming.Ikaros
             PlayerPrefs.SetInt("ConfigId", ConfigId);
             PlayerPrefs.SetInt("TimeStep", (int) TimeStep);
             PlayerPrefs.SetString("UserGameLog", logFilePath);
-            //Debug.Log("logfile: " + PlayerPrefs.GetString("UserGameLog"));
 
             if(MealDataStorage.MealList != null)
             {
@@ -69,7 +68,6 @@ namespace gpredict3_gaming.Ikaros
             }
             var player = FindObjectOfType<PlayerController>();
             player.Game = new SCGMS_Game(ConfigClass, ConfigId, TimeStep, logFilePath);
-            //Debug.Log("SCGMS Game was created");
         }
 
 
