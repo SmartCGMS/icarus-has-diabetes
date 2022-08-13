@@ -47,12 +47,12 @@ namespace gpredict3_gaming.Ikaros
         public static readonly float MAX_COLOR_ALPHA_HYPO = 1.0f / 2.0f;
 
         public static readonly string GAME_WORKING_DIRECTORY = Directory.GetCurrentDirectory();
-        public static readonly string DOWNLOAD_URL = "https://diabetes.zcu.cz/ikaros";
+        public static readonly string DOWNLOAD_URL = "https://diabetes.zcu.cz/icarus";
         public static readonly string LOG_URL_BASE = "https://diabetes.zcu.cz/api/";
-        public static readonly string UPLOAD_META_LOCATION = "upload-meta";
-        public static readonly string UPLOAD_DATA_LOCATION = "upload-data?id=";
-        public static readonly string GLOBAL_SCOREBOARD_LOCATION = "scoreboard";
-        public static readonly string VERSION_LOCATION = "version";
+        public static readonly string UPLOAD_META_LOCATION = "icarus-upload-meta";
+        public static readonly string UPLOAD_DATA_LOCATION = "icarus-upload-file/";
+        public static readonly string GLOBAL_SCOREBOARD_LOCATION = "icarus-scoreboard";
+        public static readonly string VERSION_LOCATION = "icarus-version";
         public static readonly long RESPONSE_OK = 200L;
 
         public static readonly NumberFormatInfo nfi = CultureInfo.GetCultureInfo("en-GB").NumberFormat;
