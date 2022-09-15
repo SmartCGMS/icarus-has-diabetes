@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace gpredict3_gaming.Ikaros
 {
@@ -24,6 +25,11 @@ namespace gpredict3_gaming.Ikaros
         public GameObject Message;
         private void Awake()
         {
+            var textBoxes = FindObjectsOfType<Text>();
+            foreach (var text in textBoxes)
+            {
+                if (text.name.Equals("URL")) text.text = GameParameters.DOWNLOAD_URL;
+            }
             StartCoroutine(CheckMinimalVersion());
            
         }
